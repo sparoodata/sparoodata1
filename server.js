@@ -80,10 +80,10 @@ app.get('/callback', (req, res, next) => {
 });
 
 app.get('/dashboard', isAuthenticated, (req, res) => {
-  const userId = req.user.id || 'Unknown User';
+  const nickname = req.user.nickname || 'Unknown User';
   res.send(`
     <h1>Dashboard</h1>
-    <p>Welcome, ${userId}</p>
+    <p>Welcome, ${nickname}</p>
     <h2>User Profile:</h2>
     <pre>${JSON.stringify(req.user, null, 2)}</pre>
     <a href="/logout">Log Out</a>
