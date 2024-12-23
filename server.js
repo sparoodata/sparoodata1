@@ -58,8 +58,9 @@ app.get('/', (req, res) => {
 });
 
 app.get('/login', passport.authenticate('auth0', {
-  scope: 'openid email profile',
+  scope: 'openid profile email name',
 }));
+
 
 app.get('/callback', (req, res, next) => {
   passport.authenticate('auth0', (err, user, info) => {
@@ -79,8 +80,17 @@ app.get('/callback', (req, res, next) => {
 });
 
 app.get('/dashboard', isAuthenticated, (req, res) => {
-  res.send(`<h1>Dashboard</h1><p>Welcome, ${req.user.displayName || req.user.nickname}</p><a href="/logout">Log Out</a>`);
+  const userId = req.user.id || 'Unknown User';
+  res.send(`
+    <h1>Dashboard</h1>
+    <p>Welcome, ${userId}</p>
+    <h2>User Profile:</h2>
+    <pre>${JSON.stringify(req.user, null, 2)}</pre>
+    <a href="/logout">Log Out</a>
+  `);
 });
+
+
 
 app.get('/logout', (req, res) => {
   req.logout((err) => {
@@ -88,7 +98,7 @@ app.get('/logout', (req, res) => {
       console.error(err);
       return res.redirect('/');
     }
-    res.redirect(`https://${process.env.AUTH0_DOMAIN}/v2/logout?returnTo=${encodeURIComponent('http://localhost:3000')}&client_id=${process.env.AUTH0_CLIENT_ID}`);
+    res.redirect(`https://${process.env.AUTH0_DOMAIN}/v2/logout?returnTo=${encodeURIComponent('https://fir-mixed-request.glitch.me')}&client_id=${process.env.AUTH0_CLIENT_ID}`);
   });
 });
 
