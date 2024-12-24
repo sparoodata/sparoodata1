@@ -1,22 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Meta Tags and Title -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SparooData Dashboard</title>
+
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+
+  <!-- Font Awesome for Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Link to External CSS -->
+  <link rel="stylesheet" href="/styles.css">
+  
+  <!-- Inline CSS for additional styling (if needed) -->
 </head>
 <body>
   <div class="container">
-    <!-- Sidebar -->
+
+    <!-- Left Sidebar -->
     <aside class="sidebar">
-      <h2 class="logo">SparooData</h2>
-      <nav>
-        <ul>
-          <li><a href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-          <li><a href="#" id="view-instances"><i class="fas fa-server"></i> Instances</a></li>
+      <div class="sidebar-header">
+        <h2 class="logo">SparooData</h2>
+      </div>
+      <nav class="sidebar-nav">
+        <ul id="sidebar-menu">
+          <li><a href="/dashboard" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+          <!-- Databases menu item will be injected here -->
+          <li><a href="#"><i class="fas fa-server"></i> Instances</a></li>
           <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
         </ul>
       </nav>
@@ -25,157 +38,1138 @@
       </div>
     </aside>
 
-    <!-- Main Content -->
+    <!-- Main Content Area -->
     <main class="main-content">
+
+      <!-- Header -->
       <header class="content-header">
-        <div class="header-title">
-          <h1>Welcome, <%= user.displayName || user.nickname || user.id %></h1>
+        <!-- Selected Organization (Top Left) -->
+        <div class="selected-info" id="selected-info" style="display: none;">
+          <!-- Organization name will appear here after selection -->
         </div>
-        <div class="header-actions">
-          <button id="select-project-btn" class="btn btn-primary">Select Project</button>
+        <!-- Right Side Buttons -->
+        <div class="header-right">
+          <!-- 'Select Project' Button -->
+          <button id="select-project-btn" class="btn btn-transient fixed-width">Select Project</button>
         </div>
       </header>
 
-      <!-- Organizations Section -->
-      <section>
-        <h2>Your Organizations</h2>
-        <% if (organizations.length > 0) { %>
-          <ul>
-            <% organizations.forEach(org => { %>
-              <li>
-                <span><%= org.org_name %></span>
-                <button class="btn btn-secondary" onclick="selectOrganization('<%= org._id %>')">View Projects</button>
-              </li>
-            <% }); %>
+      <!-- Right Sidebar for Organization and Project List -->
+<aside id="org-sidebar" class="org-sidebar">
+  <div class="org-sidebar-header">
+    <h2 id="sidebar-title">Select an Organization</h2>
+  </div>
+    <div id="sidebar-message" class="sidebar-message" style="display: none;"></div>
+  
+        <div class="org-sidebar-body">
+          <ul id="organization-list" class="list">
+            <!-- Organizations will be dynamically loaded here -->
           </ul>
-        <% } else { %>
-          <p>No organizations found. <button class="btn btn-primary" onclick="createOrganization()">Create Organization</button></p>
-        <% } %>
-      </section>
-
-      <!-- Projects Section -->
-      <section id="projects-section" style="display: none;">
-        <h2>Your Projects</h2>
-        <ul id="projects-list"></ul>
-        <button class="btn btn-primary" onclick="createProject()">Create Project</button>
-      </section>
-
-      <!-- Instances Section -->
-      <section id="instances-section">
-        <h2>Your Instances</h2>
-        <% if (instances.length > 0) { %>
-          <ul>
-            <% instances.forEach(instance => { %>
-              <li>
-                <span><%= instance.instance_name %></span> - 
-                <span><%= instance.database_type %></span>
-                <button class="btn btn-secondary" onclick="viewInstanceDetails('<%= instance._id %>')">Details</button>
-              </li>
-            <% }); %>
+          <ul id="project-list" class="list" style="display: none;">
+            <!-- Projects will be dynamically loaded here -->
           </ul>
-        <% } else { %>
-          <p>No instances found. <button class="btn btn-primary" onclick="createInstance()">Create Instance</button></p>
-        <% } %>
-      </section>
+          <!-- Create Organization Form -->
+          <div id="create-org-form" class="form-section" style="display: none;">
+            <!-- Form will be dynamically generated here -->
+          </div>
+          <!-- Create Project Form -->
+          <div id="create-project-form" class="form-section" style="display: none;">
+            <!-- Form will be dynamically generated here -->
+          </div>
+          <!-- Create Instance Form -->
+          <div id="create-instance-form" class="form-section" style="display: none;">
+            <!-- Form will be dynamically generated here -->
+          </div>
+        </div>
+        <div class="org-sidebar-footer">
+          <!-- Buttons will be placed inside forms now -->
+        </div>
+      </aside>
+
+<section id="main-content-body" class="content-body">
+  <!-- Main Content Header -->
+  <div id="main-content-header" class="main-content-header">
+    <!-- You can add a header title here if needed -->
+  </div>
+  <!-- Loading Indicator -->
+  <div id="loading-indicator" class="loading-indicator" style="display: none;">
+    <div class="spinner"></div>
+    <p>Loading instances...</p>
+  </div>
+  <div id="instance-list" class="instance-list">
+    <!-- Instances or database options will be displayed here -->
+  </div>
+</section>
+
     </main>
-
-    <!-- Right Sidebar -->
-    <aside id="right-sidebar" class="right-sidebar">
-      <div class="sidebar-header">
-        <h2 id="sidebar-title">Details</h2>
-        <button id="close-sidebar-btn" class="close-sidebar-btn">&times;</button>
-      </div>
-      <div id="sidebar-body" class="sidebar-body">
-        <!-- Content dynamically added -->
-      </div>
-    </aside>
   </div>
 
+  <!-- Details Sidebar -->
+  <div id="details-sidebar" class="details-sidebar">
+    <div class="details-sidebar-header">
+      <h2 id="details-sidebar-title">Instance Details</h2>
+      <button id="close-sidebar" class="close-sidebar-btn">&times;</button>
+    </div>
+    <div id="details-sidebar-body" class="details-sidebar-body">
+      <!-- Instance details will be populated here -->
+    </div>
+  </div>
+
+  <!-- JavaScript -->
   <script>
-    // Event listeners for sidebar and buttons
-    document.getElementById('close-sidebar-btn').addEventListener('click', () => {
-      document.getElementById('right-sidebar').classList.remove('open');
-    });
+    document.addEventListener('DOMContentLoaded', function () {
+      const selectProjectButton = document.getElementById('select-project-btn');
+      const selectedInfoDiv = document.getElementById('selected-info');
+      const organizationList = document.getElementById('organization-list');
+      const projectList = document.getElementById('project-list');
+      const instanceList = document.getElementById('instance-list');
+      const orgSidebar = document.getElementById('org-sidebar');
+      const sidebarMenu = document.getElementById('sidebar-menu');
+      const mainContentHeader = document.getElementById('main-content-header');
+      let orgData = [];
+      let selectedOrgId = '';
+      let selectedOrgName = '';
+      let selectedProjectId = '';
+      let selectedProjectName = '';
 
-    // Fetch and display projects for selected organization
-    function selectOrganization(orgId) {
-      fetch(`/organization/${orgId}/projects`)
-        .then(response => response.json())
-        .then(projects => {
-          const projectList = document.getElementById('projects-list');
-          projectList.innerHTML = ''; // Clear existing projects
-          projects.forEach(project => {
-            const listItem = document.createElement('li');
-            listItem.innerHTML = `
-              <span>${project.name}</span>
-              <button class="btn btn-secondary" onclick="selectProject('${project._id}')">View Instances</button>
-            `;
-            projectList.appendChild(listItem);
-          });
-          document.getElementById('projects-section').style.display = 'block';
-        })
-        .catch(err => console.error('Error fetching projects:', err));
+      // Form containers
+      const createOrgFormContainer = document.getElementById('create-org-form');
+      const createProjectFormContainer = document.getElementById('create-project-form');
+      const createInstanceFormContainer = document.getElementById('create-instance-form');
+
+      // Check if organization and project are stored in sessionStorage
+      if (sessionStorage.getItem('selectedOrgId') && sessionStorage.getItem('selectedProjectId')) {
+        selectedOrgId = sessionStorage.getItem('selectedOrgId');
+        selectedOrgName = sessionStorage.getItem('selectedOrgName');
+        selectedProjectId = sessionStorage.getItem('selectedProjectId');
+        selectedProjectName = sessionStorage.getItem('selectedProjectName');
+        // Update UI accordingly
+        selectedInfoDiv.style.display = 'block';
+        selectedInfoDiv.innerHTML = `<b>${selectedOrgName}</b>`; // Only organization name
+        selectProjectButton.textContent = selectedProjectName;
+        displayInstances(selectedProjectId);
+        addDatabasesMenuItem();
+      }
+
+      // Open Sidebar to select Organization and Project
+      selectProjectButton.addEventListener('click', openOrgSidebar);
+      
+      // Function to open a specific sidebar and close others
+function openSidebar(sidebar) {
+  // Close all sidebars
+  const allSidebars = document.querySelectorAll('.org-sidebar, .details-sidebar');
+  allSidebars.forEach(sb => {
+    if (sb !== sidebar) {
+      sb.classList.remove('open');
     }
+  });
+  // Open the selected sidebar
+  sidebar.classList.add('open');
+}
 
-    // Fetch and display instances for selected project
-    function selectProject(projectId) {
-      fetch(`/project/${projectId}/instances`)
-        .then(response => response.json())
-        .then(instances => {
-          const instanceList = document.getElementById('instances-section');
-          instanceList.innerHTML = '<h2>Your Instances</h2>';
-          if (instances.length > 0) {
-            const ul = document.createElement('ul');
-            instances.forEach(instance => {
-              const listItem = document.createElement('li');
-              listItem.innerHTML = `
-                <span>${instance.instance_name}</span> - <span>${instance.database_type}</span>
-                <button class="btn btn-secondary" onclick="viewInstanceDetails('${instance._id}')">Details</button>
-              `;
-              ul.appendChild(listItem);
+      
+      function displaySidebarMessage(message, type) {
+  const messageDiv = document.getElementById('sidebar-message');
+  messageDiv.textContent = message;
+  messageDiv.className = `sidebar-message ${type}`; // Adds 'success' or 'error' class
+  messageDiv.style.display = 'block';
+
+  // Optionally hide the message after a few seconds
+  setTimeout(() => {
+    messageDiv.style.display = 'none';
+  }, 5000); // Adjust the duration as needed
+}
+
+// Modify existing functions to use openSidebar
+function openOrgSidebar() {
+  fetch('/organizations')
+    .then(response => response.json())
+    .then(organizations => {
+      orgData = organizations;
+      displayOrganizations();
+      openSidebar(orgSidebar); // Use the openSidebar function
+      projectList.style.display = 'none';
+      createInstanceFormContainer.style.display = 'none';
+      document.getElementById('sidebar-title').textContent = 'Select an Organization';
+    })
+    .catch(error => console.error('Error fetching organizations:', error));
+}
+
+function openCreateInstanceForm() {
+  // Open the org-sidebar to display the create instance form
+  openSidebar(orgSidebar); // Ensure that org-sidebar is open
+
+  // Hide current lists and buttons
+  organizationList.style.display = 'none';
+  projectList.style.display = 'none';
+  createOrgFormContainer.style.display = 'none';
+  createProjectFormContainer.style.display = 'none';
+  const orgSidebarFooter = document.querySelector('.org-sidebar-footer');
+  orgSidebarFooter.innerHTML = '';
+  // Show the Create Instance form
+  createInstanceFormContainer.style.display = 'block';
+  document.getElementById('sidebar-title').textContent = 'Create Instance';
+
+  // Build the form
+  createInstanceFormContainer.innerHTML = `
+    <form id="new-instance-form">
+      <label for="instance-name">Instance Name:</label>
+      <input type="text" id="instance-name" name="instance_name" class="underline-input" required>
+
+      <label for="database-type">Database:</label>
+      <select id="database-type" name="database_type" class="underline-input" required>
+        <option value="">--Select Database--</option>
+        <option value="mysql">MySQL</option>
+        <option value="mariadb">MariaDB</option>
+        <option value="mongodb">MongoDB</option>
+        <option value="postgres">PostgreSQL</option>
+      </select>
+
+      <label for="enable-backups">
+        <input type="checkbox" id="enable-backups" name="enable_backups">
+        Enable Backups
+      </label>
+
+      <label for="admin-password">Admin Password:</label>
+      <input type="password" id="admin-password" name="admin_password" class="underline-input" required>
+
+      <label for="allow-cidrs">Allow CIDRs:</label>
+      <input type="text" id="allow-cidrs" name="allow_cidrs" class="underline-input" placeholder="e.g., 192.168.1.0/24,10.0.0.0/16" required>
+
+      <div class="form-buttons">
+        <button type="button" id="cancel-create-instance-btn" class="btn btn-secondary">Cancel</button>
+        <button type="submit" class="btn btn-primary">Create Instance</button>
+      </div>
+    </form>
+  `;
+
+  // Add event listeners
+  document.getElementById('new-instance-form').addEventListener('submit', submitNewInstanceForm);
+  document.getElementById('cancel-create-instance-btn').addEventListener('click', cancelCreateInstanceForm);
+}
+
+function openInstanceDetails(instance) {
+  const sidebar = document.getElementById('details-sidebar');
+  const sidebarTitle = document.getElementById('details-sidebar-title');
+  const sidebarBody = document.getElementById('details-sidebar-body');
+
+  // Set sidebar title
+  sidebarTitle.textContent = `Instance Details - ${instance.instance_name}`;
+
+  // Clear previous content
+  sidebarBody.innerHTML = '';
+
+  // Create a list to display instance details
+  const detailsList = document.createElement('ul');
+  detailsList.className = 'details-list';
+
+  // Instance Name
+  const nameItem = document.createElement('li');
+  nameItem.innerHTML = `<strong>Instance Name:</strong> ${instance.instance_name}`;
+  detailsList.appendChild(nameItem);
+
+  // Database Name
+  const dbNameItem = document.createElement('li');
+  dbNameItem.innerHTML = `<strong>Database Name:</strong> ${instance.database_name}`;
+  detailsList.appendChild(dbNameItem);
+
+  // Status
+  const statusItem = document.createElement('li');
+  statusItem.innerHTML = `<strong>Status:</strong> ${capitalizeFirstLetter(instance.status)}`;
+  detailsList.appendChild(statusItem);
+
+  // Add more details as needed
+
+  // Append details to sidebar body
+  sidebarBody.appendChild(detailsList);
+
+  // Open the details sidebar
+  openSidebar(detailsSidebar);
+}
+
+// Close all sidebars when any close button is clicked
+document.getElementById('close-sidebar').addEventListener('click', () => {
+  const allSidebars = document.querySelectorAll('.org-sidebar, .details-sidebar');
+  allSidebars.forEach(sb => sb.classList.remove('open'));
+});
+
+
+      function openOrgSidebar() {
+        fetch('/organizations')
+          .then(response => response.json())
+          .then(organizations => {
+            orgData = organizations;
+            displayOrganizations();
+            orgSidebar.classList.add('open');
+            projectList.style.display = 'none';
+            createInstanceFormContainer.style.display = 'none';
+            document.getElementById('sidebar-title').textContent = 'Select an Organization';
+          })
+          .catch(error => console.error('Error fetching organizations:', error));
+      }
+
+      function displayOrganizations() {
+        organizationList.innerHTML = '';
+        organizationList.style.display = 'block';
+        projectList.style.display = 'none';
+        createOrgFormContainer.style.display = 'none';
+        createProjectFormContainer.style.display = 'none';
+        createInstanceFormContainer.style.display = 'none';
+        orgData.forEach(org => {
+          const orgItem = document.createElement('li');
+          orgItem.className = 'org-item';
+          orgItem.textContent = org.org_name;
+          orgItem.addEventListener('click', () => selectOrganization(org._id, org.org_name));
+          organizationList.appendChild(orgItem);
+        });
+
+        // Add "Create Organization" and "Cancel" buttons
+        const footerButtons = document.createElement('div');
+        footerButtons.className = 'form-buttons';
+        footerButtons.innerHTML = `
+          <button type="button" id="cancel-btn" class="btn btn-secondary">Cancel</button>
+          <button type="button" id="create-org-btn" class="btn btn-primary">Create Organization</button>
+        `;
+        const orgSidebarFooter = document.querySelector('.org-sidebar-footer');
+        orgSidebarFooter.innerHTML = '';
+        orgSidebarFooter.appendChild(footerButtons);
+
+        // Add event listeners for buttons
+        document.getElementById('cancel-btn').addEventListener('click', () => {
+          orgSidebar.classList.remove('open');
+        });
+        document.getElementById('create-org-btn').addEventListener('click', openCreateOrgForm);
+      }
+
+      // Handle Organization Selection
+      function selectOrganization(orgId, orgName) {
+        selectedOrgId = orgId;
+        selectedOrgName = orgName;
+        // Store in sessionStorage
+        sessionStorage.setItem('selectedOrgId', selectedOrgId);
+        sessionStorage.setItem('selectedOrgName', selectedOrgName);
+        // Proceed to select project
+        displayProjects(orgId);
+      }
+
+      // Fetch and Display Projects for Selected Organization
+      function displayProjects(orgId) {
+        fetch(`/organization/${orgId}/projects`)
+          .then(response => response.json())
+          .then(projects => {
+            organizationList.style.display = 'none';
+            projectList.style.display = 'block';
+            projectList.innerHTML = '';
+            createInstanceFormContainer.style.display = 'none';
+            document.getElementById('sidebar-title').textContent = 'Select a Project';
+
+            createOrgFormContainer.style.display = 'none';
+            createProjectFormContainer.style.display = 'none';
+
+            projects.forEach(project => {
+              const projectItem = document.createElement('li');
+              projectItem.className = 'project-item';
+              projectItem.textContent = project.name;
+              projectItem.addEventListener('click', () => selectProject(project._id, project.name));
+              projectList.appendChild(projectItem);
             });
-            instanceList.appendChild(ul);
-          } else {
-            instanceList.innerHTML += '<p>No instances found. <button class="btn btn-primary" onclick="createInstance()">Create Instance</button></p>';
+
+            // Add "Create Project" and "Cancel" buttons
+            const footerButtons = document.createElement('div');
+            footerButtons.className = 'form-buttons';
+            footerButtons.innerHTML = `
+              <button type="button" id="cancel-btn" class="btn btn-secondary">Cancel</button>
+              <button type="button" id="create-project-btn" class="btn btn-primary">Create Project</button>
+            `;
+            const orgSidebarFooter = document.querySelector('.org-sidebar-footer');
+            orgSidebarFooter.innerHTML = '';
+            orgSidebarFooter.appendChild(footerButtons);
+
+            // Add event listeners for buttons
+            document.getElementById('cancel-btn').addEventListener('click', () => {
+              orgSidebar.classList.remove('open');
+            });
+            document.getElementById('create-project-btn').addEventListener('click', openCreateProjectForm);
+          })
+          .catch(error => console.error('Error fetching projects:', error));
+      }
+
+      // Handle Project Selection
+      function selectProject(projectId, projectName) {
+        selectedProjectId = projectId;
+        selectedProjectName = projectName;
+        // Update the 'Select Project' button text
+        selectProjectButton.textContent = projectName;
+        // Store in sessionStorage
+        sessionStorage.setItem('selectedProjectId', selectedProjectId);
+        sessionStorage.setItem('selectedProjectName', selectedProjectName);
+        orgSidebar.classList.remove('open');  // Close sidebar
+        displayInstances(projectId);  // Show instances in main content
+        // Display Organization name in the header
+        selectedInfoDiv.style.display = 'block';
+        selectedInfoDiv.innerHTML = `<b>${selectedOrgName}</b>`; // Only organization name
+
+        // Add Databases menu item
+        addDatabasesMenuItem();
+      }
+
+      // Function to add Databases menu item
+      function addDatabasesMenuItem() {
+        // Remove existing Databases menu item if any
+        const existingDatabasesItem = document.getElementById('databases-menu-item');
+        if (existingDatabasesItem) {
+          existingDatabasesItem.remove();
+        }
+
+        // Create new Databases menu item
+        const databasesMenuItem = document.createElement('li');
+        databasesMenuItem.id = 'databases-menu-item';
+        databasesMenuItem.classList.add('has-submenu');
+        const databasesLink = document.createElement('a');
+        databasesLink.href = '#';
+        databasesLink.innerHTML = '<i class="fas fa-database"></i> Databases';
+        databasesMenuItem.appendChild(databasesLink);
+
+        // Submenu for database types
+        const submenu = document.createElement('ul');
+        submenu.classList.add('submenu');
+        const databaseTypes = ['MySQL', 'MariaDB', 'MongoDB', 'PostgreSQL'];
+
+        databaseTypes.forEach(type => {
+          const submenuItem = document.createElement('li');
+          const submenuLink = document.createElement('a');
+          submenuLink.href = '#';
+          submenuLink.textContent = type;
+          submenuLink.addEventListener('click', () => displayDatabaseOptions(type));
+          submenuItem.appendChild(submenuLink);
+          submenu.appendChild(submenuItem);
+        });
+
+        databasesMenuItem.appendChild(submenu);
+
+        // Toggle submenu on click
+        databasesLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          databasesMenuItem.classList.toggle('active');
+        });
+
+        // Insert the Databases menu item after the Dashboard item
+        sidebarMenu.insertBefore(databasesMenuItem, sidebarMenu.children[1]);
+      }
+
+      
+      
+      // Function to display database options
+      function displayDatabaseOptions(databaseType) {
+        instanceList.innerHTML = ''; // Clear previous content
+        // Create action bar with Create Instance button and search input
+        const actionBar = document.createElement('div');
+        actionBar.className = 'action-bar';
+
+        // Create "Create Instance" button
+        const createInstanceButton = document.createElement('button');
+        createInstanceButton.textContent = 'Create Instance';
+        createInstanceButton.className = 'btn btn-primary create-instance-btn';
+        createInstanceButton.addEventListener('click', openCreateInstanceForm);
+
+        // Create search input
+        const searchInput = document.createElement('input');
+        searchInput.type = 'text';
+        searchInput.placeholder = 'Search instances...';
+        searchInput.className = 'search-input';
+
+        // Append button and search input to action bar
+        actionBar.appendChild(createInstanceButton);
+        actionBar.appendChild(searchInput);
+
+        // Append action bar to instanceList
+        instanceList.appendChild(actionBar);
+
+        // Placeholder for database-specific options
+        const dbOptionsDiv = document.createElement('div');
+        dbOptionsDiv.innerHTML = `<h2>${databaseType} Options</h2>`;
+        // You can add specific options or functionalities related to the selected database type here
+        instanceList.appendChild(dbOptionsDiv);
+      }
+
+      // Function to open the create instance form
+      function openCreateInstanceForm() {
+        // Open the sidebar
+        orgSidebar.classList.add('open');
+
+        // Hide current lists and buttons
+        organizationList.style.display = 'none';
+        projectList.style.display = 'none';
+        createOrgFormContainer.style.display = 'none';
+        createProjectFormContainer.style.display = 'none';
+
+        // Show the Create Instance form
+        createInstanceFormContainer.style.display = 'block';
+        document.getElementById('sidebar-title').textContent = 'Create Instance';
+
+        // Build the form
+        createInstanceFormContainer.innerHTML = `
+          <form id="new-instance-form">
+            <label for="instance-name">Instance Name:</label>
+            <input type="text" id="instance-name" name="instance_name" class="underline-input" required>
+
+            <label for="database-type">Database:</label>
+            <select id="database-type" name="database_type" class="underline-input" required>
+              <option value="">--Select Database--</option>
+              <option value="mysql">MySQL</option>
+              <option value="mariadb">MariaDB</option>
+              <option value="mongodb">MongoDB</option>
+              <option value="postgres">PostgreSQL</option>
+            </select>
+
+            <label for="enable-backups">
+              <input type="checkbox" id="enable-backups" name="enable_backups">
+              Enable Backups
+            </label>
+
+            <label for="admin-password">Admin Password:</label>
+            <input type="password" id="admin-password" name="admin_password" class="underline-input" required>
+
+            <label for="allow-cidrs">Allow CIDRs:</label>
+            <input type="text" id="allow-cidrs" name="allow_cidrs" class="underline-input" placeholder="e.g., 192.168.1.0/24,10.0.0.0/16" required>
+
+            <div class="form-buttons">
+              <button type="button" id="cancel-create-instance-btn" class="btn btn-secondary">Cancel</button>
+              <button type="submit" class="btn btn-primary">Create Instance</button>
+            </div>
+          </form>
+        `;
+
+        // Add event listeners
+        document.getElementById('new-instance-form').addEventListener('submit', submitNewInstanceForm);
+        document.getElementById('cancel-create-instance-btn').addEventListener('click', cancelCreateInstanceForm);
+      }
+
+      function cancelCreateInstanceForm() {
+        // Hide the form
+        createInstanceFormContainer.style.display = 'none';
+
+        // Close the sidebar
+        orgSidebar.classList.remove('open');
+      }
+
+function submitNewInstanceForm(event) {
+  event.preventDefault();
+  const instanceName = document.getElementById('instance-name').value.trim();
+  const databaseType = document.getElementById('database-type').value;
+  const enableBackups = document.getElementById('enable-backups').checked;
+  const adminPassword = document.getElementById('admin-password').value.trim();
+  const allowCidrs = document.getElementById('allow-cidrs').value.trim();
+
+  // Basic validation
+  if (!instanceName || !databaseType || !adminPassword || !allowCidrs) {
+    displaySidebarMessage('Please fill in all required fields.', 'error');
+    return;
+  }
+
+  // Prepare data
+  const instanceData = {
+    instance_name: instanceName,
+    database_type: databaseType,
+    enable_backups: enableBackups,
+    admin_password: adminPassword,
+    allow_cidrs: allowCidrs,
+    organization: selectedOrgId,
+    project: selectedProjectId
+  };
+
+  // Send POST request to create instance
+  fetch('/create-instance', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(instanceData)
+  })
+  .then(response => response.json())
+  .then(data => {
+    if(data.success) {
+      displaySidebarMessage('Instance created successfully!', 'success');
+      // Refresh the instances list after a short delay
+      setTimeout(() => {
+        displayInstances(selectedProjectId);
+        // Close the sidebar
+        orgSidebar.classList.remove('open');
+      }, 1000);
+    } else {
+      displaySidebarMessage(data.error || 'Error creating instance.', 'error');
+    }
+  })
+  .catch(error => {
+    console.error('Error creating instance:', error);
+    displaySidebarMessage('Error creating instance.', 'error');
+  });
+}
+
+
+      // Function to open the Create Organization form
+      function openCreateOrgForm() {
+        // Hide lists and buttons
+        organizationList.style.display = 'none';
+        projectList.style.display = 'none';
+        createInstanceFormContainer.style.display = 'none';
+        // Hide footer buttons
+        const orgSidebarFooter = document.querySelector('.org-sidebar-footer');
+        orgSidebarFooter.innerHTML = '';
+
+        // Show the form
+        createOrgFormContainer.style.display = 'block';
+        createProjectFormContainer.style.display = 'none';
+
+        // Update sidebar title
+        document.getElementById('sidebar-title').textContent = 'Create Organization';
+
+        // Build the form
+        createOrgFormContainer.innerHTML = `
+          <form id="new-org-form">
+            <label for="org-name">Organization Name:</label>
+            <input type="text" id="org-name" name="org_name" class="underline-input" required>
+            <label for="org-location">Location:</label>
+            <input type="text" id="org-location" name="location" class="underline-input" required>
+            <div class="form-buttons">
+              <button type="button" id="cancel-create-org-btn" class="btn btn-secondary">Cancel</button>
+              <button type="submit" class="btn btn-primary">Create Organization</button>
+            </div>
+          </form>
+        `;
+
+        // Add event listeners
+        document.getElementById('new-org-form').addEventListener('submit', submitNewOrgForm);
+        document.getElementById('cancel-create-org-btn').addEventListener('click', cancelCreateOrgForm);
+      }
+
+      function cancelCreateOrgForm() {
+        // Hide the form
+        createOrgFormContainer.style.display = 'none';
+
+        // Show the organization list and 'Create Organization' button
+        displayOrganizations();
+        document.getElementById('sidebar-title').textContent = 'Select an Organization';
+      }
+
+function submitNewOrgForm(event) {
+  event.preventDefault();
+  const orgName = document.getElementById('org-name').value.trim();
+  const orgLocation = document.getElementById('org-location').value.trim();
+
+  if (!orgName || !orgLocation) {
+    displaySidebarMessage('Please fill in all required fields.', 'error');
+    return;
+  }
+
+  // Prepare data
+  const orgData = {
+    org_name: orgName,
+    location: orgLocation
+  };
+
+  // Send POST request to create organization
+  fetch('/create-organization', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(orgData)
+  })
+  .then(response => response.json())
+  .then(data => {
+    if(data.success) {
+      displaySidebarMessage('Organization created successfully!', 'success');
+      // Refresh the organization list after a short delay
+      setTimeout(() => {
+        openOrgSidebar();
+      }, 1000);
+    } else {
+      displaySidebarMessage(data.error || 'Error creating organization.', 'error');
+    }
+  })
+  .catch(error => {
+    console.error('Error creating organization:', error);
+    displaySidebarMessage('Error creating organization.', 'error');
+  });
+}
+
+
+      // Function to open the Create Project form
+      function openCreateProjectForm() {
+        // Hide lists and buttons
+        organizationList.style.display = 'none';
+        projectList.style.display = 'none';
+        createInstanceFormContainer.style.display = 'none';
+        // Hide footer buttons
+        const orgSidebarFooter = document.querySelector('.org-sidebar-footer');
+        orgSidebarFooter.innerHTML = '';
+
+        // Show the form
+        createProjectFormContainer.style.display = 'block';
+        createOrgFormContainer.style.display = 'none';
+
+        // Update sidebar title
+        document.getElementById('sidebar-title').textContent = 'Create Project';
+
+        // Build the form
+        createProjectFormContainer.innerHTML = `
+          <form id="new-project-form">
+            <label for="project-name">Project Name:</label>
+            <input type="text" id="project-name" name="project_name" class="underline-input" required>
+            <label for="project-description">Description:</label>
+            <input type="text" id="project-description" name="project_description" class="underline-input">
+            <div class="form-buttons">
+              <button type="button" id="cancel-create-project-btn" class="btn btn-secondary">Cancel</button>
+              <button type="submit" class="btn btn-primary">Create Project</button>
+            </div>
+          </form>
+        `;
+
+        // Add event listeners
+        document.getElementById('new-project-form').addEventListener('submit', submitNewProjectForm);
+        document.getElementById('cancel-create-project-btn').addEventListener('click', cancelCreateProjectForm);
+      }
+
+      function cancelCreateProjectForm() {
+        // Hide the form
+        createProjectFormContainer.style.display = 'none';
+
+        // Show the project list and 'Create Project' button
+        displayProjects(selectedOrgId);
+        document.getElementById('sidebar-title').textContent = 'Select a Project';
+      }
+
+function submitNewProjectForm(event) {
+  event.preventDefault();
+  const projectName = document.getElementById('project-name').value.trim();
+  const projectDescription = document.getElementById('project-description').value.trim();
+
+  if (!projectName) {
+    displaySidebarMessage('Please enter the project name.', 'error');
+    return;
+  }
+
+  // Prepare data with correct field names
+  const projectData = {
+    name: projectName,
+    description: projectDescription
+  };
+
+  // Send POST request to create project
+  fetch(`/organization/${selectedOrgId}/create-project`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(projectData)
+  })
+  .then(response => response.json())
+  .then(data => {
+    if(data.success) {
+      displaySidebarMessage('Project created successfully!', 'success');
+      // Refresh the project list after a short delay
+      setTimeout(() => {
+        displayProjects(selectedOrgId);
+      }, 1000);
+    } else {
+      displaySidebarMessage(data.error || 'Error creating project.', 'error');
+    }
+  })
+  .catch(error => {
+    console.error('Error creating project:', error);
+    displaySidebarMessage('Error creating project.', 'error');
+  });
+}
+
+
+      // Function to capitalize the first letter of a string
+      function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+      }
+
+      // Main function to display instances
+function displayInstances(projectId) {
+  const instanceList = document.getElementById('instance-list');
+  instanceList.innerHTML = ''; // Clear previous content
+
+  // Show the loading indicator
+  const loadingIndicator = document.getElementById('loading-indicator');
+  loadingIndicator.style.display = 'flex';
+
+  fetch(`/project/${projectId}/instances`)
+    .then(response => response.json())
+    .then(instances => {
+      // Hide the loading indicator
+      loadingIndicator.style.display = 'none';
+
+      // Ensure instanceList is empty
+      instanceList.innerHTML = '';
+
+      // Check if instances is an array
+      if (!Array.isArray(instances)) {
+        instances = [];
+      }
+
+      if (instances.length === 0) {
+        // Handle case when there are no instances
+        const noInstancesDiv = document.createElement('div');
+        noInstancesDiv.className = 'no-instances';
+
+        const message = document.createElement('p');
+        message.textContent = 'No instances found in this project.';
+        noInstancesDiv.appendChild(message);
+
+        // Create "Create Instance" button
+        const createInstanceButton = document.createElement('button');
+        createInstanceButton.textContent = 'Create Instance';
+        createInstanceButton.className = 'btn btn-primary';
+        createInstanceButton.addEventListener('click', openCreateInstanceForm);
+
+        noInstancesDiv.appendChild(createInstanceButton);
+
+        instanceList.appendChild(noInstancesDiv);
+      } else {
+        // Existing code to render instances
+        // Create action bar with Create Instance button and search input
+        const actionBar = document.createElement('div');
+        actionBar.className = 'action-bar';
+
+        // Create "Create Instance" button
+        const createInstanceButton = document.createElement('button');
+        createInstanceButton.textContent = 'Create Instance';
+        createInstanceButton.className = 'btn btn-primary create-instance-btn';
+        createInstanceButton.addEventListener('click', openCreateInstanceForm);
+
+        // Create search input
+        const searchInput = document.createElement('input');
+        searchInput.type = 'text';
+        searchInput.placeholder = 'Search instances...';
+        searchInput.className = 'search-input';
+
+        // Append button and search input to action bar
+        actionBar.appendChild(createInstanceButton);
+        actionBar.appendChild(searchInput);
+
+        // Append action bar to instanceList
+        instanceList.appendChild(actionBar);
+
+        // Pagination variables
+        let currentPage = 1;
+        const itemsPerPage = 5;
+
+        // Function to render instances with pagination and search
+        function renderInstances() {
+          // Clear previous instances and pagination controls
+          const existingContainer = document.querySelector('.instances-container');
+          if (existingContainer) {
+            existingContainer.remove();
           }
-        })
-        .catch(err => console.error('Error fetching instances:', err));
-    }
+          const existingPagination = document.querySelector('.pagination-container');
+          if (existingPagination) {
+            existingPagination.remove();
+          }
 
-    // View instance details
-    function viewInstanceDetails(instanceId) {
-      fetch(`/instance/${instanceId}`)
-        .then(response => response.json())
-        .then(instance => {
-          const sidebar = document.getElementById('right-sidebar');
-          const sidebarBody = document.getElementById('sidebar-body');
-          sidebarBody.innerHTML = `
-            <p><strong>Instance Name:</strong> ${instance.instance_name}</p>
-            <p><strong>Database Type:</strong> ${instance.database_type}</p>
-            <p><strong>Status:</strong> ${instance.status}</p>
-          `;
-          sidebar.classList.add('open');
-        })
-        .catch(err => console.error('Error fetching instance details:', err));
-    }
+          // Filter instances based on search input
+          const searchTerm = searchInput.value.toLowerCase();
+          const filteredInstances = instances.filter(instance => {
+            const nameMatch =
+              instance.instance_name &&
+              instance.instance_name.toLowerCase().includes(searchTerm);
+            const dbNameMatch =
+              instance.database_type &&
+              instance.database_type.toLowerCase().includes(searchTerm);
+            const statusMatch =
+              instance.status &&
+              instance.status.toLowerCase().includes(searchTerm);
 
-    // Create organization
-    function createOrganization() {
-      // Logic to show a form or redirect to create-organization route
-      alert('Open create organization form');
-    }
+            return nameMatch || dbNameMatch || statusMatch;
+          });
 
-    // Create project
-    function createProject() {
-      // Logic to show a form or redirect to create-project route
-      alert('Open create project form');
-    }
+          // Calculate pagination
+          const totalPages = Math.ceil(filteredInstances.length / itemsPerPage);
+          currentPage = Math.min(currentPage, totalPages) || 1;
+          const startIndex = (currentPage - 1) * itemsPerPage;
+          const endIndex = startIndex + itemsPerPage;
+          const instancesToDisplay = filteredInstances.slice(startIndex, endIndex);
 
-    // Create instance
-    function createInstance() {
-      // Logic to show a form or redirect to create-instance route
-      alert('Open create instance form');
-    }
+          // Create a container for the instances
+          const instancesContainer = document.createElement('div');
+          instancesContainer.className = 'instances-container';
+
+          // Header row
+          const headerRow = document.createElement('div');
+          headerRow.className = 'instance-header';
+
+          const nameHeader = document.createElement('span');
+          nameHeader.className = 'instance-name header';
+          nameHeader.textContent = 'Instance Name';
+
+          const dbNameHeader = document.createElement('span');
+          dbNameHeader.className = 'database-name header';
+          dbNameHeader.textContent = 'Database';
+
+          const statusHeader = document.createElement('span');
+          statusHeader.className = 'instance-status header';
+          statusHeader.textContent = 'Status';
+
+          // Placeholder for actions menu header
+          const actionsHeader = document.createElement('span');
+          actionsHeader.className = 'actions-header';
+          actionsHeader.textContent = ''; // Empty header for actions column
+
+          headerRow.appendChild(nameHeader);
+          headerRow.appendChild(dbNameHeader);
+          headerRow.appendChild(statusHeader);
+          headerRow.appendChild(actionsHeader); // Placeholder for actions menu
+
+          instancesContainer.appendChild(headerRow);
+
+          // Check if there are instances to display
+          if (instancesToDisplay.length === 0) {
+            const noResults = document.createElement('div');
+            noResults.textContent = 'No instances found.';
+            noResults.className = 'no-results';
+            instancesContainer.appendChild(noResults);
+          } else {
+            instancesToDisplay.forEach(instance => {
+              const instanceDiv = document.createElement('div');
+              instanceDiv.className = 'instance-item';
+
+              // Instance Name
+              const nameSpan = document.createElement('span');
+              nameSpan.className = 'instance-name';
+              nameSpan.textContent = instance.instance_name;
+
+              // Database Name (Database Type)
+              const dbNameSpan = document.createElement('span');
+              dbNameSpan.className = 'database-name';
+              dbNameSpan.textContent = instance.database_type;
+
+              // Status
+              const statusSpan = document.createElement('span');
+              statusSpan.className = 'instance-status';
+              statusSpan.textContent = capitalizeFirstLetter(instance.status);
+
+              // Actions Menu
+              const actionsMenu = document.createElement('div');
+              actionsMenu.className = 'actions-menu';
+
+              const actionsButton = document.createElement('button');
+              actionsButton.className = 'actions-button';
+              actionsButton.innerHTML = '<span class="dots-icon">&#x22EE;</span>'; // Vertical ellipsis
+
+              // Create dropdown menu
+              const actionsDropdown = document.createElement('div');
+              actionsDropdown.className = 'actions-dropdown';
+
+              // Add dropdown items (View, Edit, Delete, Logs)
+              const viewButton = document.createElement('button');
+              viewButton.className = 'dropdown-item';
+              viewButton.textContent = 'View';
+              viewButton.addEventListener('click', (event) => {
+                event.stopPropagation();
+                // Implement view action
+                openInstanceDetails(instance);
+              });
+
+              const editButton = document.createElement('button');
+              editButton.className = 'dropdown-item';
+              editButton.textContent = 'Edit';
+              editButton.addEventListener('click', (event) => {
+                event.stopPropagation();
+                // Implement edit action
+                alert('Edit instance: ' + instance.instance_name);
+              });
+
+              const deleteButton = document.createElement('button');
+              deleteButton.className = 'dropdown-item';
+              deleteButton.textContent = 'Delete';
+              deleteButton.addEventListener('click', (event) => {
+                event.stopPropagation();
+                // Implement delete action
+                alert('Delete instance: ' + instance.instance_name);
+              });
+
+              const logsButton = document.createElement('button');
+              logsButton.className = 'dropdown-item';
+              logsButton.textContent = 'Logs';
+              logsButton.addEventListener('click', (event) => {
+                event.stopPropagation();
+                // Implement logs action
+                alert('View logs for instance: ' + instance.instance_name);
+              });
+
+              // Assemble the dropdown menu
+              actionsDropdown.appendChild(viewButton);
+              actionsDropdown.appendChild(editButton);
+              actionsDropdown.appendChild(deleteButton);
+              actionsDropdown.appendChild(logsButton);
+
+              // Append button and dropdown to actions menu
+              actionsMenu.appendChild(actionsButton);
+              actionsMenu.appendChild(actionsDropdown);
+
+              // Assemble the instance item
+              instanceDiv.appendChild(nameSpan);
+              instanceDiv.appendChild(dbNameSpan);
+              instanceDiv.appendChild(statusSpan);
+              instanceDiv.appendChild(actionsMenu);
+
+              // Add click event listener to instanceDiv
+              instanceDiv.addEventListener('click', () => {
+                openInstanceDetails(instance);
+              });
+
+              // Prevent event bubbling from actions menu
+              actionsButton.addEventListener('click', (event) => {
+                event.stopPropagation(); // Prevent click from reaching the instanceDiv
+                closeAllDropdowns(); // Close other open dropdowns
+                actionsMenu.classList.toggle('open');
+              });
+
+              // Append to instances container
+              instancesContainer.appendChild(instanceDiv);
+            });
+          }
+
+          // Append instances container to instanceList
+          instanceList.appendChild(instancesContainer);
+
+          // Pagination Controls
+          if (totalPages > 1) {
+            const paginationContainer = document.createElement('div');
+            paginationContainer.className = 'pagination-container';
+
+            const prevButton = document.createElement('button');
+            prevButton.textContent = 'Previous';
+            prevButton.className = 'pagination-button';
+            prevButton.disabled = currentPage === 1;
+            prevButton.addEventListener('click', () => {
+              if (currentPage > 1) {
+                currentPage--;
+                renderInstances();
+              }
+            });
+
+            const nextButton = document.createElement('button');
+            nextButton.textContent = 'Next';
+            nextButton.className = 'pagination-button';
+            nextButton.disabled = currentPage === totalPages;
+            nextButton.addEventListener('click', () => {
+              if (currentPage < totalPages) {
+                currentPage++;
+                renderInstances();
+              }
+            });
+
+            const pageInfo = document.createElement('span');
+            pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+            pageInfo.className = 'page-info';
+
+            // Align "Previous" and "Next" buttons to the left
+            paginationContainer.appendChild(prevButton);
+            paginationContainer.appendChild(nextButton);
+            paginationContainer.appendChild(pageInfo);
+
+            // Append pagination container to instanceList
+            instanceList.appendChild(paginationContainer);
+          }
+
+          // Close dropdowns when clicking outside
+          document.removeEventListener('click', closeAllDropdowns);
+          document.addEventListener('click', closeAllDropdowns);
+
+          function closeAllDropdowns(event) {
+            const dropdowns = document.querySelectorAll('.actions-menu.open');
+            dropdowns.forEach(menu => {
+              if (!menu.contains(event.target)) {
+                menu.classList.remove('open');
+              }
+            });
+          }
+        }
+
+        // Event listener for search input
+        searchInput.addEventListener('input', () => {
+          currentPage = 1; // Reset to first page on new search
+          renderInstances();
+        });
+
+        // Initial render
+        renderInstances();
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching instances:', error);
+      // Hide the loading indicator even if there's an error
+      loadingIndicator.style.display = 'none';
+      // Optionally display an error message
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error-message';
+      errorDiv.textContent = 'Failed to load instances. Please try again later.';
+      instanceList.appendChild(errorDiv);
+    });
+}
+
+
+
+
+      // Function to open instance details in the sidebar
+      function openInstanceDetails(instance) {
+        const sidebar = document.getElementById('details-sidebar');
+        const sidebarTitle = document.getElementById('details-sidebar-title');
+        const sidebarBody = document.getElementById('details-sidebar-body');
+
+        // Set sidebar title
+        sidebarTitle.textContent = `Instance Details - ${instance.instance_name}`;
+
+        // Clear previous content
+        sidebarBody.innerHTML = '';
+
+        // Create a list to display instance details
+        const detailsList = document.createElement('ul');
+        detailsList.className = 'details-list';
+
+        // Instance Name
+        const nameItem = document.createElement('li');
+        nameItem.innerHTML = `<strong>Instance Name:</strong> ${instance.instance_name}`;
+        detailsList.appendChild(nameItem);
+
+        // Database Name
+        const dbNameItem = document.createElement('li');
+        dbNameItem.innerHTML = `<strong>Database Name:</strong> ${instance.database_name}`;
+        detailsList.appendChild(dbNameItem);
+
+        // Status
+        const statusItem = document.createElement('li');
+        statusItem.innerHTML = `<strong>Status:</strong> ${capitalizeFirstLetter(instance.status)}`;
+        detailsList.appendChild(statusItem);
+
+        // Add more details as needed
+
+        // Append details to sidebar body
+        sidebarBody.appendChild(detailsList);
+
+        // Show the sidebar
+        sidebar.classList.add('open');
+      }
+
+      // Close sidebar when close button is clicked
+      document.getElementById('close-sidebar').addEventListener('click', () => {
+        document.getElementById('details-sidebar').classList.remove('open');
+      });
+
+      // Placeholder function for creating instance (to be implemented)
+      // Already handled in openCreateInstanceForm()
+
+      // Clear sessionStorage on logout
+      const logoutButton = document.querySelector('.logout-btn');
+      logoutButton.addEventListener('click', () => {
+        sessionStorage.clear();
+      });
+    });
   </script>
+
 </body>
 </html>
