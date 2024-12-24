@@ -73,28 +73,27 @@
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
-    .instance h3 {
-      margin: 0;
-    }
-
-    .instance p {
-      margin: 5px 0 0;
-    }
-
-    .create-instance-btn {
-      display: inline-block;
+    .header {
       background-color: #2c3e50;
       color: white;
-      padding: 10px 15px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-bottom: 20px;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .create-instance-btn:hover {
+    .header button {
       background-color: #18bc9c;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .header button:hover {
+      background-color: #16a085;
     }
 
     .right-pane {
@@ -155,31 +154,42 @@
     </div>
   </div>
   <div class="main-content">
-    <h1>MariaDB Instances</h1>
-    <button class="create-instance-btn" onclick="toggleRightPane()">Create Instance</button>
+    <div class="header">
+      <h1>MariaDB Instances</h1>
+      <button onclick="toggleRightPane()">Select Project</button>
+    </div>
 
-    <% if (instances.length > 0) { %>
-      <% instances.forEach(instance => { %>
-        <div class="instance">
-          <h3><%= instance.instance_name %></h3>
-          <p><strong>Status:</strong> <%= instance.status %></p>
-          <p><strong>Allow CIDRs:</strong> <%= instance.allow_cidrs.join(", ") %></p>
-        </div>
-      <% }); %>
-    <% } else { %>
-      <p>No MariaDB instances found.</p>
-    <% } %>
+    <div id="instances">
+      <% if (instances.length > 0) { %>
+        <% instances.forEach(instance => { %>
+          <div class="instance">
+            <h3><%= instance.instance_name %></h3>
+            <p><strong>Status:</strong> <%= instance.status %></p>
+            <p><strong>Allow CIDRs:</strong> <%= instance.allow_cidrs.join(", ") %></p>
+          </div>
+        <% }); %>
+      <% } else { %>
+        <p>No instances found.</p>
+      <% } %>
+    </div>
   </div>
+
   <div class="right-pane" id="right-pane">
-    <h2>Create New Instance</h2>
-    <form action="/create-instance" method="POST">
-      <input type="text" name="instance_name" placeholder="Instance Name" required />
-      <select name="database_type" required>
-        <option value="mariadb">MariaDB</option>
-      </select>
-      <input type="text" name="allow_cidrs" placeholder="Allowed CIDRs (comma-separated)" required />
-      <input type="password" name="admin_password" placeholder="Admin Password" required />
-      <button type="submit">Create Instance</button>
+    <h2>Select Organization</h2>
+    <form action="/select-organization" method="POST" id="organization-form">
+      <% if (organizations.length > 0) { %>
+        <select name="organization_id" required>
+          <% organizations.forEach(org => { %>
+            <option value="<%= org._id %>"><%= org.org_name %></option>
+          <% }); %>
+        </select>
+        <button type="submit">Select</button>
+      <% } else { %>
+        <p>No organizations found. Create one:</p>
+        <input type="text" name="org_name" placeholder="Organization Name" required />
+        <input type="text" name="location" placeholder="Location" required />
+        <button type="submit" formaction="/create-organization">Create Organization</button>
+      <% } %>
     </form>
   </div>
 
