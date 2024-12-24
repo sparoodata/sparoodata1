@@ -129,6 +129,7 @@ app.get("/dashboard", isAuthenticated, async (req, res) => {
   }
 });
 
+
 // Fetch all organizations for the logged-in user
 app.get("/organizations", isAuthenticated, async (req, res) => {
   try {
@@ -156,11 +157,16 @@ app.get("/organization/:orgId/projects", isAuthenticated, async (req, res) => {
 app.post("/create-organization", isAuthenticated, async (req, res) => {
   const { org_name, location } = req.body;
   try {
-    const newOrg = new Organization({
-      org_name,
-      location,
-      created_by: req.user.id,
-    });
+    const newOrg = new mongoose.Schema({
+  org_name: String,
+  location: String,
+  created_by: String,
+  projects: [{ type: mongoose.Schema.Types.ObjectId, ref: "Project" }],
+});
+
+    const organizations = await Organization.find({ created_by: req.user.id })
+  .populate("projects");
+
     await newOrg.save();
     res.json({ success: true, message: "Organization created successfully." });
   } catch (err) {
@@ -181,12 +187,13 @@ app.post("/organization/:orgId/create-project", isAuthenticated, async (req, res
     if (!organization) {
       return res.status(404).json({ error: "Organization not found" });
     }
-    const newProject = new Project({
-      name,
-      description,
-      organization: orgId,
-      created_by: req.user.id,
-    });
+const newProject = new Project({
+    name,
+    description,
+    organization: orgId,
+    created_by: req.user.id, // You are storing user.id here
+});
+
     await newProject.save();
     res.json({ success: true, message: "Project created successfully." });
   } catch (err) {
