@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+    }
+
+    .sidepane {
+      width: 250px;
+      background-color: #2c3e50;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .sidepane .menu {
+      padding: 20px;
+    }
+
+    .sidepane .menu a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      margin: 10px 0;
+      font-size: 1rem;
+    }
+
+    .sidepane .menu a:hover {
+      color: #18bc9c;
+    }
+
+    .sidepane .logout {
+      padding: 20px;
+      border-top: 1px solid #34495e;
+    }
+
+    .sidepane .logout a {
+      color: white;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+
+    .sidepane .logout a:hover {
+      color: #e74c3c;
+    }
+
+    .main-content {
+      flex: 1;
+      background-color: #ecf0f1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .main-content h1 {
+      margin-top: 0;
+    }
+
+    .instance {
+      background: white;
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .instance h3 {
+      margin: 0;
+    }
+
+    .instance p {
+      margin: 5px 0 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidepane">
+    <div class="menu">
+      <h2 style="text-align: center;">Menu</h2>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/project/instances">Instances</a>
+      <a href="/settings">Settings</a>
+    </div>
+    <div class="logout">
+      <a href="/logout">Logout</a>
+    </div>
+  </div>
+  <div class="main-content">
+    <h1>MariaDB Instances</h1>
+    <% if (instances.length > 0) { %>
+      <% instances.forEach(instance => { %>
+        <div class="instance">
+          <h3><%= instance.instance_name %></h3>
+          <p><strong>Status:</strong> <%= instance.status %></p>
+          <p><strong>Allow CIDRs:</strong> <%= instance.allow_cidrs.join(", ") %></p>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <p>No MariaDB instances found.</p>
+    <% } %>
+  </div>
+</body>
+</html>

@@ -14,7 +14,7 @@ const fs = require('fs');
 
 // Load environment variables from .env
 require('dotenv').config();
-
+process.env.MONGODB_SUPPRESS_STARTUP_WARNINGS = "true";
 // Initialize Express app
 const app = express();
 app.use(nocache());
@@ -33,13 +33,12 @@ app.use(
 );
 
 // MongoDB connection
+
 mongoose
-  .connect(
-    "mongodb+srv://sparoodata:sparoodata@sparrodata.fchyf.mongodb.net/sparoodata?retryWrites=true&w=majority",
-    { useNewUrlParser: true, useUnifiedTopology: true }
-  )
+  .connect("mongodb+srv://sparoodata:sparoodata@sparrodata.fchyf.mongodb.net/sparoodata?retryWrites=true&w=majority")
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
+
 
 // Configure Passport.js with Auth0
 passport.use(
@@ -106,13 +105,14 @@ app.get("/callback", (req, res, next) => {
 
 app.get("/dashboard", isAuthenticated, async (req, res) => {
   try {
-    const organizations = await Organization.find({ created_by: req.user.id });
-    res.send(`<h1>Dashboard</h1><p>Welcome, ${req.user.displayName || req.user.nickname || req.user.id}</p><p>Organizations: ${JSON.stringify(organizations)}</p><a href="/logout">Log Out</a>`);
+    const instances = await InstanceModel.find({ database_type: "mariadb" });
+    res.render("dashboard", { user: req.user, instances });
   } catch (err) {
-    console.error("Error fetching dashboard data:", err);
+    console.error("Error fetching instances:", err);
     res.status(500).send("Error loading dashboard.");
   }
 });
+
 
 app.get("/logout", (req, res) => {
   req.logout((err) => {
@@ -121,7 +121,7 @@ app.get("/logout", (req, res) => {
       return res.redirect("/");
     }
     res.redirect(
-      `https://${process.env.AUTH0_DOMAIN}/v2/logout?returnTo=${encodeURIComponent("http://localhost:3000")}&client_id=${process.env.AUTH0_CLIENT_ID}`
+      `https://${process.env.AUTH0_DOMAIN}/v2/logout?returnTo=${encodeURIComponent("https://fir-mixed-request.glitch.me")}&client_id=${process.env.AUTH0_CLIENT_ID}`
     );
   });
 });
