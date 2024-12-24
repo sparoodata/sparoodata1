@@ -19,6 +19,9 @@ app.use(nocache());
 // Middleware to parse JSON requests
 app.use(express.json());
 app.use(express.static("public"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.set("view engine", "ejs");
 
 // Configure session middleware
@@ -230,46 +233,29 @@ app.post("/create-instance", isAuthenticated, async (req, res) => {
   const {
     instance_name,
     database_type,
-    enable_backups,
     admin_password,
     allow_cidrs,
-    organization,
-    project,
   } = req.body;
 
   try {
-    // Ensure the organization belongs to the user
-    const org = await Organization.findOne({ _id: organization, created_by: req.user.id });
-    if (!org) {
-      return res.status(404).json({ error: "Organization not found or not authorized." });
-    }
-
-    // Ensure the project belongs to the organization
-    const proj = await Project.findOne({ _id: project, organization: organization });
-    if (!proj) {
-      return res.status(404).json({ error: "Project not found or not authorized." });
-    }
-
-    // Create the instance and link it to the user
+    // Ensure only logged-in user can create the instance
     const newInstance = new InstanceModel({
       instance_name,
       database_type,
-      enable_backups,
-      admin_password, // Hash this password in production
-      allow_cidrs: allow_cidrs.split(",").map((cidr) => cidr.trim()), // Convert to array
-      organization,
-      project,
+      admin_password, // Consider hashing the password
+      allow_cidrs: allow_cidrs.split(",").map((cidr) => cidr.trim()),
+      created_by: req.user.id, // Associate with the logged-in user
       status: "pending",
-      created_by: req.user.id, // Associate with the user
     });
 
     await newInstance.save();
-    res.json({ success: true, message: "Instance created successfully." });
+    res.redirect("/dashboard");
   } catch (err) {
     console.error("Error creating instance:", err);
-    res.status(500).json({ error: "Internal server error." });
+    res.status(500).send("Error creating instance.");
   }
 });
+
 
 
 app.get("/login", (req, res) => {
