@@ -9,6 +9,7 @@ const InstanceSchema = new mongoose.Schema({
   organization: { type: mongoose.Schema.Types.ObjectId, ref: "Organization" },
   project: { type: mongoose.Schema.Types.ObjectId, ref: "Project" },
   status: String,
+  created_by: { type: String, required: true }, // Associate with the user's ID
 });
 
 module.exports = mongoose.models.Instance || mongoose.model("Instance", InstanceSchema);

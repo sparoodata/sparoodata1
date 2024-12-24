@@ -39,6 +39,7 @@ mongoose
   .catch((err) => console.error("MongoDB connection error:", err));
 
 
+
 // Configure Passport.js with Auth0
 passport.use(
   new Auth0Strategy(
@@ -104,13 +105,15 @@ app.get("/callback", (req, res, next) => {
 
 app.get("/dashboard", isAuthenticated, async (req, res) => {
   try {
-    const instances = await InstanceModel.find({ database_type: "mariadb" });
+    // Fetch instances created by the logged-in user
+    const instances = await InstanceModel.find({ created_by: req.user.id, database_type: "mariadb" });
     res.render("dashboard", { user: req.user, instances });
   } catch (err) {
     console.error("Error fetching instances:", err);
     res.status(500).send("Error loading dashboard.");
   }
 });
+
 
 
 app.get("/logout", (req, res) => {
@@ -205,22 +208,69 @@ app.post(
   }
 );
 
-// Fetch instances for a specific project
-app.get(
-  "/project/:projectId/instances",
-  isAuthenticated,
-  async (req, res) => {
-    const { projectId } = req.params;
+app.get("/project/:projectId/instances", isAuthenticated, async (req, res) => {
+  const { projectId } = req.params;
 
-    try {
-      const instances = await InstanceModel.find({ project: projectId });
-      res.json(instances.length ? instances : []);
-    } catch (err) {
-      console.error("Error fetching instances:", err);
-      res.status(500).json({ error: "Error fetching instances" });
-    }
+  try {
+    // Fetch instances belonging to the user for the specified project
+    const instances = await InstanceModel.find({
+      project: projectId,
+      created_by: req.user.id, // Restrict to the logged-in user's data
+    });
+
+    res.json(instances.length ? instances : []);
+  } catch (err) {
+    console.error("Error fetching instances:", err);
+    res.status(500).json({ error: "Error fetching instances" });
   }
-);
+});
+
+
+app.post("/create-instance", isAuthenticated, async (req, res) => {
+  const {
+    instance_name,
+    database_type,
+    enable_backups,
+    admin_password,
+    allow_cidrs,
+    organization,
+    project,
+  } = req.body;
+
+  try {
+    // Ensure the organization belongs to the user
+    const org = await Organization.findOne({ _id: organization, created_by: req.user.id });
+    if (!org) {
+      return res.status(404).json({ error: "Organization not found or not authorized." });
+    }
+
+    // Ensure the project belongs to the organization
+    const proj = await Project.findOne({ _id: project, organization: organization });
+    if (!proj) {
+      return res.status(404).json({ error: "Project not found or not authorized." });
+    }
+
+    // Create the instance and link it to the user
+    const newInstance = new InstanceModel({
+      instance_name,
+      database_type,
+      enable_backups,
+      admin_password, // Hash this password in production
+      allow_cidrs: allow_cidrs.split(",").map((cidr) => cidr.trim()), // Convert to array
+      organization,
+      project,
+      status: "pending",
+      created_by: req.user.id, // Associate with the user
+    });
+
+    await newInstance.save();
+    res.json({ success: true, message: "Instance created successfully." });
+  } catch (err) {
+    console.error("Error creating instance:", err);
+    res.status(500).json({ error: "Internal server error." });
+  }
+});
+
 
 app.get("/login", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "login.html"));
