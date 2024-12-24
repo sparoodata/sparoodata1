@@ -13,13 +13,19 @@
     "@fastify/static": "^6.10.2",
     "@fastify/view": "^8.0.0",
     "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "express-session": "^1.18.1",
     "passport": "^0.7.0",
-    "passport-auth0": "^1.4.4"
+    "passport-auth0": "^1.4.4",
+    "express": "^5.0.1",
+    "axios": "^1.7.7",
+    "mime-types": "^3.0.0",
+    "express-session": "^1.18.1",
+    "ejs": "^3.1.10",
+    "@kubernetes/client-node": "^0.22.1",
+    "mongoose": "^8.7.2",
+    "nocache": "^4.0.0"
   },
   "engines": {
-    "node": "14.x"
+    "node": "16.x"
   },
   "repository": {
     "url": "https://glitch.com/edit/#!/glitch-hello-node"
