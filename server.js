@@ -11,16 +11,15 @@ const Project = require("./models/project");
 const InstanceModel = require("./models/instance");
 const k8s = require('@kubernetes/client-node');
 const fs = require('fs');
-
 // Load environment variables from .env
 require('dotenv').config();
-process.env.MONGODB_SUPPRESS_STARTUP_WARNINGS = "true";
 // Initialize Express app
 const app = express();
 app.use(nocache());
 // Middleware to parse JSON requests
 app.use(express.json());
 app.use(express.static("public"));
+app.set("view engine", "ejs");
 
 // Configure session middleware
 app.use(
