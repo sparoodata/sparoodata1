@@ -17,6 +17,7 @@ const app = express();
 app.use(nocache());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
 
 // Set view engine to EJS
 app.set("view engine", "ejs");
@@ -34,10 +35,13 @@ app.use(
 
 // MongoDB connection
 mongoose
-  .connect(process.env.MONGO_URI || "mongodb://localhost:27017/sparoodata", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(
+    "mongodb+srv://sparoodata:sparoodata@sparrodata.fchyf.mongodb.net/sparoodata?retryWrites=true&w=majority",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
@@ -103,7 +107,7 @@ app.get("/logout", (req, res) => {
     if (err) return res.redirect("/");
     res.redirect(
       `https://${process.env.AUTH0_DOMAIN}/v2/logout?returnTo=${encodeURIComponent(
-        "http://localhost:3000"
+        "https://fir-mixed-request.glitch.me"
       )}&client_id=${process.env.AUTH0_CLIENT_ID}`
     );
   });
