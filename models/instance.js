@@ -1,16 +1,14 @@
-
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const InstanceSchema = new mongoose.Schema({
-  instance_name: { type: String, required: true },
-  database_type: { type: String, required: true },
-  enable_backups: { type: Boolean, default: false },
-  admin_password: { type: String, required: true },
-  allow_cidrs: [{ type: String, required: true }],
-  organization: { type: mongoose.Schema.Types.ObjectId, ref: "Organization", required: true },
-  project: { type: mongoose.Schema.Types.ObjectId, ref: "Project", required: true },
-  status: { type: String, default: "pending" },
-  created_at: { type: Date, default: Date.now },
+  instance_name: String,
+  database_type: String,
+  enable_backups: Boolean,
+  admin_password: String,
+  allow_cidrs: [String],
+  organization: { type: mongoose.Schema.Types.ObjectId, ref: 'Organization' },
+  project: { type: mongoose.Schema.Types.ObjectId, ref: 'Project' },
+  status: String,
 });
 
-module.exports = mongoose.model("Instance", InstanceSchema);
+module.exports = mongoose.models.Instance || mongoose.model('Instance', InstanceSchema);
