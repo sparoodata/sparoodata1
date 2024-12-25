@@ -123,8 +123,12 @@ const instanceSchema = Joi.object({
 // ---------------------
 // Routes
 // ---------------------
+//app.get("/", (req, res) => {
+//  res.send('<h1>Welcome to SparooData</h1><p><a href="/login">Log In</a></p>');
+//});
+
 app.get("/", (req, res) => {
-  res.send('<h1>Welcome to SparooData</h1><p><a href="/login">Log In</a></p>');
+  return res.redirect("/login");
 });
 
 // Auth0 login
