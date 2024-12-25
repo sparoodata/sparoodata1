@@ -32,7 +32,8 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: process.env.NODE_ENV === "production", // only set true if behind HTTPS
+      secure: false,
+    //  secure: process.env.NODE_ENV === "production", // only set true if behind HTTPS
       httpOnly: true,    // prevents JS access to cookies
       sameSite: "strict" // helps mitigate CSRF
     }
