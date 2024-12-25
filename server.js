@@ -24,22 +24,32 @@ app.use(nocache());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
 // Session config
+//app.use(
+//  session({
+  //  secret: process.env.SESSION_SECRET || "your-secret-key",
+  //  resave: false,
+   // saveUninitialized: false,
+    //cookie: {
+     // secure: true,
+    //  secure: process.env.NODE_ENV === "production", // only set true if behind HTTPS
+     // httpOnly: true,    // prevents JS access to cookies
+   //   sameSite: "strict" // helps mitigate CSRF
+//    }
+//  })
+//);
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "your-secret-key",
     resave: false,
     saveUninitialized: false,
-    cookie: {
-      secure: false,
-    //  secure: process.env.NODE_ENV === "production", // only set true if behind HTTPS
-      httpOnly: true,    // prevents JS access to cookies
-      sameSite: "strict" // helps mitigate CSRF
-    }
+    cookie: { secure: false },
   })
 );
-
 // Connect Mongoose
 mongoose
   .connect(process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/sparoodata", {
