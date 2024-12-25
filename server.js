@@ -60,7 +60,7 @@ passport.use(
       domain: process.env.AUTH0_DOMAIN,
       clientID: process.env.AUTH0_CLIENT_ID,
       clientSecret: process.env.AUTH0_CLIENT_SECRET,
-      callbackURL: process.env.AUTH0_CALLBACK_URL || "http://localhost:3000/callback",
+      callbackURL: process.env.AUTH0_CALLBACK_URL,
     },
     (accessToken, refreshToken, extraParams, profile, done) => {
       return done(null, profile);
@@ -123,6 +123,7 @@ app.get("/logout", (req, res) => {
     // Hard-code your real return URL here or use an env variable
     const returnTo = encodeURIComponent("https://fir-mixed-request.glitch.me");
     res.redirect(`https://${process.env.AUTH0_DOMAIN}/v2/logout?returnTo=${returnTo}&client_id=${process.env.AUTH0_CLIENT_ID}`);
+    
   });
 });
 
