@@ -36,11 +36,7 @@ app.use(
     secret: process.env.SESSION_SECRET || "your-secret-key",
     resave: false,
     saveUninitialized: false,
-    cookie: {
-      secure: process.env.NODE_ENV === "production", // only transmit over HTTPS in production
-      httpOnly: true,                                // not accessible via JavaScript
-      sameSite: "strict",                             // helps prevent CSRF
-    },
+    cookie: { secure: false },
   })
 );
 
@@ -270,6 +266,20 @@ app.post("/create-instance", isAuthenticated, createLimiter, async (req, res) =>
   }
 });
 
+
+// server.js
+app.get("/organizations", isAuthenticated, async (req, res) => {
+  try {
+    // Example: Find all organizations owned by the current user
+    const organizations = await Organization.find({ created_by: req.user.id });
+    // Return as JSON
+    res.json(organizations);
+  } catch (err) {
+    console.error("Error fetching organizations:", err);
+    res.status(500).json({ error: "Error fetching organizations" });
+  }
+});
+ 
 // Fetch instances for a specific project (example)
 app.get("/project/:projectId/instances", isAuthenticated, async (req, res) => {
   const { projectId } = req.params;
