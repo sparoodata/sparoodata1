@@ -86,6 +86,12 @@ function isAuthenticated(req, res, next) {
   return res.redirect("/login");
 }
 
+// If you trust the first proxy (e.g., on Heroku/Glitch):
+app.set('trust proxy', 1);
+
+// or if you trust multiple proxies:
+app.set('trust proxy', true);
+
 // ---------------------
 // Rate Limiting
 // ---------------------

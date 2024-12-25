@@ -715,15 +715,16 @@ body {
   text-align: center;
   margin-top: 20px;
 }
-.powered-by {
+/* Copyright footer styling */
+.copyright-footer {
   position: fixed;
   bottom: 0;
-  left: 0;
-  background-color: #ffffff; /* or match your site’s background color */
+  right: 0;
+  background-color: #fff; /* Adjust for your site's color scheme */
   color: #333;
   padding: 6px 12px;
   font-size: 14px;
-  border-top-right-radius: 6px; /* adds a small rounded corner */
-  box-shadow: 0 -1px 3px rgba(0,0,0,0.1); /* subtle shadow above */
-  z-index: 9999; /* ensures it stays on top if needed */
+  border-top-right-radius: 6px; /* Rounded corner on top-right */
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow above the box */
+  z-index: 9999; /* Keep it on top if needed */
 }
