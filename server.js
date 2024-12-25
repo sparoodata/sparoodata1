@@ -121,7 +121,7 @@ app.get("/logout", (req, res) => {
   req.logout((err) => {
     if (err) return res.redirect("/");
     // Hard-code your real return URL here or use an env variable
-    const returnTo = encodeURIComponent("https://yourapp.example.com");
+    const returnTo = encodeURIComponent("https://fir-mixed-request.glitch.me");
     res.redirect(`https://${process.env.AUTH0_DOMAIN}/v2/logout?returnTo=${returnTo}&client_id=${process.env.AUTH0_CLIENT_ID}`);
   });
 });
