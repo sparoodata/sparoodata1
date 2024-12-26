@@ -1,40 +1,23 @@
-<%- include('partials/header', { user: user }); %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Application</title>
+  <!-- Link to the CSS file -->
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <%- include('partials/header', { user: user }); %>
 
-<section class="hero-section">
-  <div class="hero-content">
-    <h1>Welcome to Your Cloud Database Platform</h1>
-    <p>
-      Create MySQL, MongoDB, PostgreSQL, or MariaDB databases with just a few clicks.
-      Whether it's single instances, clusters, or high-availability setups, our 24/7 DBA team 
-      ensures your database health is monitored and maintained.
-    </p>
-    <p>
-      Focus on your product while we handle your databases with top-notch reliability and support.
-    </p>
-    <a href="/login" class="btn btn-primary">Get Started</a>
-  </div>
-</section>
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1>Welcome to Your Cloud Database Service</h1>
+      <p>Manage your databases with ease and reliability.</p>
+      <button class="cta-button" onclick="window.location.href='/login'">Get Started</button>
+    </div>
+  </section>
 
-<section class="features-section">
-  <h2>Why Choose Us?</h2>
-  <div class="features">
-    <div class="feature">
-      <h3>Instant Database Setup</h3>
-      <p>Provision databases effortlessly with our user-friendly portal.</p>
-    </div>
-    <div class="feature">
-      <h3>24/7 Database Monitoring</h3>
-      <p>Our experienced DBA team ensures your databases are healthy and running optimally.</p>
-    </div>
-    <div class="feature">
-      <h3>Migration Assistance</h3>
-      <p>Seamlessly migrate your existing databases to our platform with zero downtime.</p>
-    </div>
-    <div class="feature">
-      <h3>High Availability</h3>
-      <p>Get clustered or replicated setups for guaranteed uptime and data safety.</p>
-    </div>
-  </div>
-</section>
-
-<%- include('partials/footer'); %>
+  <%- include('partials/footer'); %>
+</body>
+</html>
