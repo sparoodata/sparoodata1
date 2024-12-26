@@ -1,0 +1,18 @@
+<header class="main-header">
+  <div class="brand-name">YourCompany</div>
+  <nav class="nav-links">
+    <a href="/">Home</a>
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+
+    <% if (!user) { %>
+      <button class="btn client-login-btn"
+              onclick="window.location.href='/login'">
+        Client Login
+      </button>
+    <% } else { %>
+      <a href="/dashboard" class="btn">Dashboard</a>
+      <a href="/logout" class="btn">Logout</a>
+    <% } %>
+  </nav>
+</header>

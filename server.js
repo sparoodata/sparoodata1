@@ -134,8 +134,9 @@ const instanceSchema = Joi.object({
 //});
 
 app.get("/", (req, res) => {
-  return res.redirect("/login");
+  res.render("index", { user: req.user });
 });
+
 
 // Auth0 login
 app.get(
