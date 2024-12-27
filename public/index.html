@@ -3,86 +3,113 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cloud Database Service</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
-  <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+  <title>CloudDB - Cloud Database Services</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-  <!-- Header -->
-  <header class="header">
-    <div class="logo">CloudDB</div>
-    <nav>
-      <ul class="nav-links">
-        <li><a href="#services">Services</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <li><button class="btn-login" onclick="location.href='/login'">Client Login</button></li>
-      </ul>
-    </nav>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container">
+      <div class="logo">CloudDB</div>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#services">Services</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#global-coverage">Global Coverage</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><button class="btn-login" onclick="location.href='/login'">Client Login</button></li>
+        </ul>
+      </nav>
+    </div>
   </header>
 
   <!-- Hero Section -->
   <section class="hero">
-    <div class="hero-content">
-      <h1>Your Cloud Database Platform</h1>
-      <p>Create databases with a few clicks. From single instances to high-availability clusters, we’ve got you covered!</p>
+    <div class="container">
+      <h1>Effortless Cloud Databases</h1>
+      <p>Deploy fully managed, high-performance databases with just a few clicks. Trusted by global enterprises.</p>
       <button class="btn-primary" onclick="location.href='#services'">Explore Services</button>
     </div>
   </section>
 
   <!-- Services Section -->
   <section id="services" class="services">
-    <h2>Our Services</h2>
-    <div class="service-grid">
-      <div class="service-item">
-        <h3>MySQL</h3>
-        <p>Efficient relational database for your applications.</p>
-      </div>
-      <div class="service-item">
-        <h3>MongoDB</h3>
-        <p>High-performance NoSQL database for unstructured data.</p>
-      </div>
-      <div class="service-item">
-        <h3>PostgreSQL</h3>
-        <p>Advanced open-source database for complex queries.</p>
-      </div>
-      <div class="service-item">
-        <h3>MariaDB</h3>
-        <p>Reliable and robust relational database system.</p>
+    <div class="container">
+      <h2>Our Services</h2>
+      <div class="service-grid">
+        <div class="service-item">
+          <i class="fas fa-database service-icon"></i>
+          <h3>Single Instance</h3>
+          <p>Simple and reliable database instances for small-scale applications.</p>
+        </div>
+        <div class="service-item">
+          <i class="fas fa-network-wired service-icon"></i>
+          <h3>Clustered Databases</h3>
+          <p>High-availability clusters for mission-critical workloads.</p>
+        </div>
+        <div class="service-item">
+          <i class="fas fa-cloud service-icon"></i>
+          <h3>Cloud Migration</h3>
+          <p>Seamless database migration to the cloud with zero downtime.</p>
+        </div>
+        <div class="service-item">
+          <i class="fas fa-user-shield service-icon"></i>
+          <h3>24/7 DBA Support</h3>
+          <p>Expert database administration and monitoring round the clock.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Map Section -->
-  <section class="map-section">
-    <h2>Global Coverage</h2>
-    <div id="map" class="map-container"></div>
+  <!-- Features Section -->
+  <section id="features" class="features">
+    <div class="container">
+      <h2>Why Choose CloudDB?</h2>
+      <div class="features-grid">
+        <div class="feature-item">
+          <i class="fas fa-shield-alt feature-icon"></i>
+          <h3>Secure</h3>
+          <p>State-of-the-art security to keep your data safe.</p>
+        </div>
+        <div class="feature-item">
+          <i class="fas fa-globe feature-icon"></i>
+          <h3>Global Reach</h3>
+          <p>Datacenters in multiple regions for ultra-low latency.</p>
+        </div>
+        <div class="feature-item">
+          <i class="fas fa-clock feature-icon"></i>
+          <h3>24/7 Support</h3>
+          <p>Get expert assistance anytime, anywhere.</p>
+        </div>
+        <div class="feature-item">
+          <i class="fas fa-sync-alt feature-icon"></i>
+          <h3>Scalable</h3>
+          <p>Easily scale your database as your business grows.</p>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <!-- About Section -->
-  <section id="about" class="about">
-    <h2>About Us</h2>
-    <p>We provide 24/7 support for your database needs, from setup to daily maintenance and migrations. Trust our expert DBAs to handle your databases while you focus on growing your business.</p>
-  </section>
-
-  <!-- Contact Section -->
-  <section id="contact" class="contact">
-    <h2>Contact Us</h2>
-    <form>
-      <input type="text" placeholder="Your Name" required>
-      <input type="email" placeholder="Your Email" required>
-      <textarea placeholder="Your Message" required></textarea>
-      <button type="submit">Send Message</button>
-    </form>
+  <!-- Global Coverage -->
+  <section id="global-coverage" class="map-section">
+    <div class="container">
+      <h2>Global Coverage</h2>
+      <div class="map-container">
+        <!-- Add your global coverage map or placeholder here -->
+        <p>Interactive map coming soon...</p>
+      </div>
+    </div>
   </section>
 
   <!-- Footer -->
-  <footer>
-    <p>&copy; 2024 CloudDB. All rights reserved.</p>
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2024 CloudDB. All Rights Reserved.</p>
+    </div>
   </footer>
 
-  <!-- JavaScript -->
-  <script src="scripts.js"></script>
+  <!-- Scripts -->
+  <script src="/scripts.js"></script>
 </body>
 </html>
