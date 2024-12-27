@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cloud Database Service</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">CloudDB</div>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><button class="btn-login" onclick="location.href='/login'">Client Login</button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Your Cloud Database Platform</h1>
+      <p>Create databases with a few clicks. From single instances to high-availability clusters, we’ve got you covered!</p>
+      <button class="btn-primary" onclick="location.href='#services'">Explore Services</button>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="services">
+    <h2>Our Services</h2>
+    <div class="service-grid">
+      <div class="service-item">
+        <h3>MySQL</h3>
+        <p>Efficient relational database for your applications.</p>
+      </div>
+      <div class="service-item">
+        <h3>MongoDB</h3>
+        <p>High-performance NoSQL database for unstructured data.</p>
+      </div>
+      <div class="service-item">
+        <h3>PostgreSQL</h3>
+        <p>Advanced open-source database for complex queries.</p>
+      </div>
+      <div class="service-item">
+        <h3>MariaDB</h3>
+        <p>Reliable and robust relational database system.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map Section -->
+  <section class="map-section">
+    <h2>Global Coverage</h2>
+    <div id="map" class="map-container"></div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="about">
+    <h2>About Us</h2>
+    <p>We provide 24/7 support for your database needs, from setup to daily maintenance and migrations. Trust our expert DBAs to handle your databases while you focus on growing your business.</p>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact">
+    <h2>Contact Us</h2>
+    <form>
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <textarea placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2024 CloudDB. All rights reserved.</p>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="scripts.js"></script>
+</body>
+</html>
