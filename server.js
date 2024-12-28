@@ -354,6 +354,8 @@ app.post("/create-instance", isAuthenticated, createLimiter, async (req, res) =>
 // ---------------------
 
 
+
+// Define a schema & model for contact form data
 const contactSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
@@ -369,16 +371,11 @@ const contactSchema = new mongoose.Schema({
     default: Date.now
   }
 });
+
 const Contact = mongoose.model('Contact', contactSchema);
 
-// GET the home page (render our EJS)
-app.get('/', (req, res) => {
-  // By default, show no success message
-  res.render('index', { contactFormSubmitted: false });
-});
-
-// POST route to save form data
-app.post('/contact', async (req, res) => {
+// POST route to save contact form data
+app.post('/api/contact', async (req, res) => {
   try {
     const newContact = new Contact({
       firstName: req.body.firstName,
@@ -391,17 +388,15 @@ app.post('/contact', async (req, res) => {
       areaOfInterest: req.body.areaOfInterest,
       projectDetails: req.body.projectDetails
     });
+    
     await newContact.save();
-
-    // On success, re-render the same page with a success message
-    // The form will be blank again
-    res.render('index', { contactFormSubmitted: true });
-  } catch (err) {
-    console.error('Error saving contact:', err);
-    // If there's an error, still render the form (no success message)
-    res.render('index', { contactFormSubmitted: false });
+    return res.status(201).json({ message: 'Contact saved successfully.' });
+  } catch (error) {
+    console.error('Error saving contact:', error);
+    return res.status(500).json({ message: 'Error saving contact.' });
   }
 });
+
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
