@@ -1,653 +1,1149 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="description" content="Sparoodata - All-in-One Cloud Database Solution" />
-    <meta name="keywords" content="Sparoodata, Cloud Database, MySQL, MongoDB, PostgreSQL, MariaDB" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sparoodata</title>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link 
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" 
-      rel="stylesheet" 
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="description" content="Sparoodata - All-in-One Cloud Database Solution" />
+  <meta name="keywords" content="Sparoodata, Cloud Database, MySQL, MongoDB, PostgreSQL, MariaDB" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sparoodata</title>
 
-    <style>
-      /* Reset & Global Styles */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      html {
-        scroll-behavior: smooth;
-      }
-      body {
-        font-family: 'Poppins', sans-serif;
-        background-color: #ffffff;
-        color: #333;
-        line-height: 1.5;
-      }
-      a {
-        text-decoration: none;
-        color: inherit;
-      }
-      
-      /* Header */
-      header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 1rem 2rem;
-        background-color: #f7f7f7;
-        border-bottom: 1px solid #eee;
-      }
-      .logo {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: #ff6b6b; /* Brand color */
-      }
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" 
+    rel="stylesheet" 
+  />
 
-      /* Menu items + login on the right */
+  <style>
+    /* Reset & Global */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #ffffff;
+      color: #333;
+      line-height: 1.5;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background-color: #f7f7f7;
+      border-bottom: 1px solid #eee;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #ff6b6b; /* Brand color */
+    }
+    .menu-right {
+      display: flex;
+      align-items: center;
+      gap: 3rem; /* More space between menu and login */
+    }
+    .menu-items {
+      display: flex;
+      align-items: center;
+      gap: 3rem; /* More space between each menu link */
+    }
+    .menu-items a {
+      color: #333;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    .menu-items a:hover {
+      color: #ff6b6b;
+    }
+    .login-btn {
+      background-color: #ff6b6b;
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.25rem;
+      border-radius: 0.3rem;
+      font-weight: 600;
+      transition: 0.3s ease;
+    }
+    .login-btn:hover {
+      cursor: pointer;
+      background-color: #e55a5a;
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      background: linear-gradient(to right, #ff6b6b, #ff8e53);
+      color: #fff;
+      text-align: center;
+      padding: 5rem 2rem;
+      overflow: hidden;
+    }
+    .hero-content {
+      max-width: 700px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .hero p {
+      font-size: 1.125rem;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+      color: #fefefe;
+    }
+    .cta-btn {
+      display: inline-block;
+      background-color: #fff;
+      color: #ff6b6b;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      border-radius: 0.3rem;
+      font-weight: 600;
+      transition: 0.3s ease;
+    }
+    .cta-btn:hover {
+      background-color: #e55a5a;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    /* Wave at bottom of hero */
+    .wave {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1;
+    }
+
+    /* Services */
+    .services {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      padding: 3rem 2rem;
+      background-color: #fff;
+    }
+    .service-box {
+      flex: 1 1 250px;
+      max-width: 300px;
+      background-color: #fff;
+      border: 1px solid #eee;
+      border-radius: 0.5rem;
+      padding: 2rem;
+      text-align: center;
+      transition: 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    .service-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+    .service-icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 1rem;
+      color: #ff6b6b; /* Icon color */
+    }
+    .service-box h3 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #ff6b6b;
+    }
+    .service-box p {
+      line-height: 1.6;
+      color: #555;
+    }
+
+    /* Pricing Section */
+    #pricing {
+      padding: 3rem;
+      text-align: center;
+    }
+    .pricing-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .pricing-box {
+      flex: 1 1 250px;
+      max-width: 300px;
+      border: 1px solid #eee;
+      border-radius: 0.5rem;
+      padding: 2rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    .pricing-box h3 {
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      color: #ff6b6b;
+    }
+    .pricing-box p {
+      line-height: 1.6;
+      color: #555;
+      margin-bottom: 1rem;
+    }
+
+    /* Contact */
+    .contact-section {
+      padding: 3rem 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .contact-section h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      color: #333;
+      font-weight: 600;
+    }
+    .contact-form {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    .full-width {
+      grid-column: 1 / 3;
+    }
+    .contact-form label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 0.3rem;
+      color: #333;
+    }
+    .contact-form input,
+    .contact-form select,
+    .contact-form textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 0.3rem;
+      font-size: 1rem;
+      color: #333;
+    }
+    .contact-form textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    .submit-btn {
+      background-color: #ff6b6b;
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.3rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .submit-btn:hover {
+      background-color: #e55a5a;
+    }
+    .disclaimer {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      color: #666;
+    }
+    .disclaimer a {
+      color: #ff6b6b;
+      text-decoration: underline;
+    }
+
+    /* Success Message */
+    .success-message {
+      margin-top: 1rem;
+      color: green;
+      font-weight: 600;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #f7f7f7;
+      border-top: 1px solid #eee;
+      margin-top: 2rem;
+    }
+    footer p {
+      margin: 0;
+      font-size: 0.875rem;
+      color: #555;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
       .menu-right {
-        display: flex;
-        align-items: center;
-        gap: 2rem; /* spacing between menu and login button */
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 1rem;
       }
-
-      .menu-items {
-        display: flex;
-        align-items: center;
-        gap: 2rem; /* extra spacing between menu links */
-      }
-      .menu-items a {
-        color: #333;
-        font-weight: 500;
-        transition: color 0.3s ease;
-      }
-      .menu-items a:hover {
-        color: #ff6b6b;
-      }
-
-      /* Dropdown container */
-      .dropdown {
-        position: relative;
-        display: inline-block;
-      }
-      .dropbtn {
-        background: none;
-        border: none;
-        font-weight: 500;
-        color: #333;
-        cursor: pointer;
-        font-size: 1rem;
-        padding: 0;
-        /* Add arrow to the button after the text */
-        /* The small margin-left for spacing before arrow */
-      }
-      .dropbtn::after {
-        content: " ▼";
-        margin-left: 0.3rem;
-        font-size: 0.9rem; /* slightly smaller arrow if desired */
-      }
-      .dropbtn:hover {
-        color: #ff6b6b;
-      }
-      /* Dropdown content */
-      .dropdown-content {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background-color: #f9f9f9;
-        min-width: 140px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        z-index: 999;
-      }
-      .dropdown-content a {
-        display: block;
-        padding: 0.5rem 1rem;
-        color: #333;
-      }
-      .dropdown-content a:hover {
-        background-color: #eee;
-        color: #ff6b6b;
-      }
-      /* Show dropdown on hover */
-      .dropdown:hover .dropdown-content {
-        display: block;
-      }
-
-      .login-btn {
-        background-color: #ff6b6b;
-        color: #fff;
-        border: none;
-        padding: 0.75rem 1.25rem;
-        border-radius: 0.3rem;
-        font-weight: 600;
-        transition: 0.3s ease;
-      }
-      .login-btn:hover {
-        cursor: pointer;
-        background-color: #e55a5a;
-      }
-
-      /* Hero Section with angled background */
-      .hero {
-        position: relative;
-        padding: 5rem 2rem;
-        color: #fff;
-        background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
-        clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
-        text-align: center;
-        overflow: hidden;
-      }
-      .hero-content {
-        max-width: 700px;
-        margin: 0 auto;
-      }
-      .hero h1 {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        line-height: 1.2;
-      }
-      .hero p {
-        font-size: 1.125rem;
-        margin-bottom: 2rem;
-        line-height: 1.6;
-        color: #fefefe; 
-      }
-      .cta-btn {
-        display: inline-block;
-        background-color: #fff;
-        color: #ff6b6b;
-        border: none;
-        padding: 1rem 2rem;
-        font-size: 1rem;
-        border-radius: 0.3rem;
-        font-weight: 600;
-        transition: 0.3s ease;
-      }
-      .cta-btn:hover {
-        background-color: #e55a5a;
-        color: #fff;
-        cursor: pointer;
-      }
-
-      /* Services Section */
-      .services {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 2rem;
-        padding: 3rem 2rem;
-        background-color: #fff;
-      }
-      .service-box {
-        flex: 1 1 250px;
-        max-width: 300px;
-        background-color: #fff;
-        border: 1px solid #eee;
-        border-radius: 0.5rem;
-        padding: 2rem;
-        text-align: center;
-        transition: 0.3s ease;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-      }
-      .service-box:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-      }
-      .service-icon {
-        width: 48px;
-        height: 48px;
-        margin-bottom: 1rem;
-        color: #ff6b6b; /* Icon color */
-      }
-      .service-box h3 {
-        margin-top: 0;
-        margin-bottom: 1rem;
-        font-size: 1.25rem;
-        font-weight: 600;
-        color: #ff6b6b;
-      }
-      .service-box p {
-        line-height: 1.6;
-        color: #555;
-      }
-
-      /* Pricing Section */
-      #pricing {
-        padding: 3rem;
-        text-align: center;
-      }
-      .pricing-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 2rem;
-        margin-top: 2rem;
-      }
-      .pricing-box {
-        flex: 1 1 250px;
-        max-width: 300px;
-        border: 1px solid #eee;
-        border-radius: 0.5rem;
-        padding: 2rem;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-      }
-      .pricing-box h3 {
-        margin-bottom: 1rem;
-        font-size: 1.2rem;
-        color: #ff6b6b;
-      }
-      .pricing-box p {
-        line-height: 1.6;
-        color: #555;
-        margin-bottom: 1rem;
-      }
-
-      /* Blog Section */
-      #blog {
-        padding: 3rem;
-        text-align: center;
-      }
-
-      /* Contact Section */
-      .contact-section {
-        padding: 3rem 2rem;
-        max-width: 900px;
-        margin: 0 auto;
-      }
-      .contact-section h2 {
-        text-align: center;
-        margin-bottom: 2rem;
-        font-size: 2rem;
-        color: #333;
-        font-weight: 600;
-      }
-      
-      /* Contact form styling */
       .contact-form {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
+        grid-template-columns: 1fr; 
       }
       .full-width {
-        grid-column: 1 / 3;
+        grid-column: 1 / 2;
       }
-      .contact-form label {
-        display: block;
-        font-size: 0.9rem;
-        font-weight: 500;
-        margin-bottom: 0.3rem;
-        color: #333;
+    }
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
       }
-      .contact-form input,
-      .contact-form select,
-      .contact-form textarea {
-        width: 100%;
-        padding: 0.75rem;
-        border: 1px solid #ccc;
-        border-radius: 0.3rem;
+      .hero p {
         font-size: 1rem;
-        color: #333;
       }
-      .contact-form textarea {
-        resize: vertical;
-        min-height: 120px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo">Sparoodata</div>
+    <div class="menu-right">
+      <nav class="menu-items">
+        <a href="#aboutus">About Us</a>
+        <a href="#pricing">Pricing</a>
+        <!-- Blog is on a separate page -->
+        <a href="/blog">Blog</a>
+      </nav>
+      <a class="login-btn" href="YOUR_AUTH0_LOGIN_URL" target="_blank">Client Login</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Your All-in-One Cloud Database Solution</h1>
+      <p>
+        Easily create and manage MySQL, MongoDB, PostgreSQL, and MariaDB databases
+        with just a few clicks. Whether you need a single instance, a replicated
+        cluster, or a high-availability setup, Sparoodata has you covered.
+      </p>
+      <a href="#contact" class="cta-btn">Get Started</a>
+    </div>
+    <!-- Wave at bottom -->
+    <svg class="wave" viewBox="0 0 1440 320" preserveAspectRatio="none">
+      <path 
+        fill="#fff" 
+        fill-opacity="1" 
+        d="M0,224L48,197.3C96,171,192,117,288,106.7C384,96,480,128,576,128C672,128,768,96,864,96C960,96,1056,128,1152,149.3C1248,171,1344,181,1392,186.7L1440,192L1440,0L1392,0C1344,0,
+        1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z">
+      </path>
+    </svg>
+  </section>
+
+  <!-- Services Section -->
+  <section class="services" id="aboutus">
+    <!-- Service 1: One-Click Provisioning (Zap icon) -->
+    <div class="service-box">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="service-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+      </svg>
+      <h3>One-Click Provisioning</h3>
+      <p>
+        Spin up databases effortlessly without complex configurations. 
+        Our intuitive platform saves time and reduces human error.
+      </p>
+    </div>
+
+    <!-- Service 2: 24/7 DBA Support (Globe icon) -->
+    <div class="service-box">
+      <svg 
+        xmlns="http://www.w3.org/2000/svg"
+        class="service-icon"
+        viewBox="0 0 24 24" 
+        fill="none" 
+        stroke="currentColor" 
+        stroke-width="2" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M2 12h20"></path>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+      </svg>
+      <h3>24/7 DBA Support</h3>
+      <p>
+        Our expert team monitors and optimizes databases around the clock, 
+        ensuring top-notch performance and reliability.
+      </p>
+    </div>
+
+    <!-- Service 3: Seamless Migration (Arrow icon) -->
+    <div class="service-box">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="service-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor" 
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <polyline points="17 1 21 5 17 9"></polyline>
+        <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+        <polyline points="7 23 3 19 7 15"></polyline>
+        <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+      </svg>
+      <h3>Seamless Migration</h3>
+      <p>
+        Let us handle data transfers, version upgrades, and backup strategies 
+        so you can migrate with ease.
+      </p>
+    </div>
+
+    <!-- Service 4: Day-to-Day Administration (Hand-Raise icon) -->
+    <div class="service-box">
+      <!-- "Hand-paper" icon from Font Awesome, inline SVG -->
+      <svg 
+        xmlns="http://www.w3.org/2000/svg"
+        class="service-icon"
+        viewBox="0 0 448 512"
+        fill="currentColor"
+      >
+        <path 
+          d="M216 0c13.3 0 24 10.7 24 
+          24V128h8V24c0-13.3 10.7-24 
+          24-24s24 10.7 24 24V128h8V56c0-13.3 
+          10.7-24 24-24s24 10.7 24 24V128h8c13.3 
+          0 24 10.7 24 24v88c0 2.8-.5 5.5-1.5 
+          8l-32 88-19 52.3c-7.5 20.7-27.3 35.7-49.2 
+          39.3l-119.7 20c-6.3 1-12.8 1.5-19.2 
+          1.5H72c-39.8 0-72-32.2-72-72v-90.7c0-13.3 
+          10.7-24 24-24s24 10.7 24 24V360c0 13.3 
+          10.7 24 24 24h16c2 0 4-.2 6-.5l119.7-20c4.5-.8 
+          8.2-3.9 9.7-8.2l19-52.3 32-88c.5-1.4.8-2.8.8-4.2v-88h-8c-13.3 
+          0-24-10.7-24-24V24c0-13.3 10.7-24 24-24z"
+        />
+      </svg>
+      <h3>Day-to-Day Administration</h3>
+      <p>
+        From performance tuning to security patches, our DBAs handle all 
+        aspects of database administration for you.
+      </p>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing">
+    <h2>Pricing</h2>
+    <p>Below is sample pricing for our popular managed database offerings:</p>
+    <div class="pricing-container">
+      <div class="pricing-box">
+        <h3>MariaDB</h3>
+        <p>Starting at <strong>$49/month</strong></p>
+        <p>Ideal for small to medium workloads.</p>
+      </div>
+      <div class="pricing-box">
+        <h3>MongoDB</h3>
+        <p>Starting at <strong>$59/month</strong></p>
+        <p>Perfect for modern, document-based applications.</p>
+      </div>
+      <div class="pricing-box">
+        <h3>PostgreSQL</h3>
+        <p>Starting at <strong>$69/month</strong></p>
+        <p>Enterprise-ready relational database for advanced needs.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact-section" id="contact">
+    <h2>Contact Us</h2>
+
+    <!-- If rendering with a template engine (EJS, Handlebars, etc.), 
+         you can conditionally show a success message: -->
+    <!-- 
+    <% if (contactFormSubmitted) { %>
+      <div class="success-message">Your form was submitted successfully!</div>
+    <% } %>
+    -->
+
+    <form class="contact-form" action="/contact" method="POST">
+      <!-- First & Last Name -->
+      <div>
+        <label for="first-name">First Name:*</label>
+        <input id="first-name" name="firstName" type="text" placeholder="First Name *" required />
+      </div>
+      <div>
+        <label for="last-name">Last Name:*</label>
+        <input id="last-name" name="lastName" type="text" placeholder="Last Name *" required />
+      </div>
+
+      <!-- Work Email & Phone -->
+      <div>
+        <label for="work-email">Work Email:*</label>
+        <input id="work-email" name="workEmail" type="email" placeholder="Work Email *" required />
+      </div>
+      <div>
+        <label for="phone">Phone:*</label>
+        <input id="phone" name="phone" type="text" placeholder="Phone *" required />
+      </div>
+
+      <!-- Job Title & Company Name -->
+      <div>
+        <label for="job-title">Job Title:*</label>
+        <input id="job-title" name="jobTitle" type="text" placeholder="Job Title *" required />
+      </div>
+      <div>
+        <label for="company-name">Company Name:*</label>
+        <input id="company-name" name="companyName" type="text" placeholder="Company *" required />
+      </div>
+
+      <!-- Website URL (full width) -->
+      <div class="full-width">
+        <label for="website-url">Website URL:*</label>
+        <input id="website-url" name="websiteUrl" type="text" placeholder="Website URL *" required />
+      </div>
+
+      <!-- Area of Interest (dropdown, full width) -->
+      <div class="full-width">
+        <label for="area-of-interest">Area of Interest:*</label>
+        <select id="area-of-interest" name="areaOfInterest" required>
+          <option value="">Please Select</option>
+          <option value="mysql">MySQL</option>
+          <option value="mongodb">MongoDB</option>
+          <option value="postgresql">PostgreSQL</option>
+          <option value="mariadb">MariaDB</option>
+          <option value="migration">Migration</option>
+          <option value="dba-services">Day-to-Day DBA Services</option>
+        </select>
+      </div>
+
+      <!-- Tell us about your project (textarea) -->
+      <div class="full-width">
+        <label for="project-details">Tell us about your project:</label>
+        <textarea id="project-details" name="projectDetails" placeholder="Tell us about your project"></textarea>
+      </div>
+
+      <!-- Submit button -->
+      <div class="full-width">
+        <button type="submit" class="submit-btn">Submit</button>
+      </div>
+
+      <!-- Disclaimer -->
+      <div class="disclaimer full-width">
+        Sparoodata needs the contact information you provide to us to contact you 
+        about our products and services. You may unsubscribe from these communications 
+        at any time. For information on how to unsubscribe, as well as our privacy 
+        practices and commitment to protecting your privacy, check out our 
+        <a href="#" target="_blank">Privacy Policy</a>.
+      </div>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2024 Sparoodata. All rights reserved.</p>
+  </footer>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="description" content="Sparoodata - All-in-One Cloud Database Solution" />
+  <meta name="keywords" content="Sparoodata, Cloud Database, MySQL, MongoDB, PostgreSQL, MariaDB" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sparoodata</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" 
+    rel="stylesheet" 
+  />
+
+  <style>
+    /* Reset & Global */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #ffffff;
+      color: #333;
+      line-height: 1.5;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background-color: #f7f7f7;
+      border-bottom: 1px solid #eee;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #ff6b6b; /* Brand color */
+    }
+    .menu-right {
+      display: flex;
+      align-items: center;
+      gap: 3rem; /* More space between menu and login */
+    }
+    .menu-items {
+      display: flex;
+      align-items: center;
+      gap: 3rem; /* More space between each menu link */
+    }
+    .menu-items a {
+      color: #333;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    .menu-items a:hover {
+      color: #ff6b6b;
+    }
+    .login-btn {
+      background-color: #ff6b6b;
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.25rem;
+      border-radius: 0.3rem;
+      font-weight: 600;
+      transition: 0.3s ease;
+    }
+    .login-btn:hover {
+      cursor: pointer;
+      background-color: #e55a5a;
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      background: linear-gradient(to right, #ff6b6b, #ff8e53);
+      color: #fff;
+      text-align: center;
+      padding: 5rem 2rem;
+      overflow: hidden;
+    }
+    .hero-content {
+      max-width: 700px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .hero p {
+      font-size: 1.125rem;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+      color: #fefefe;
+    }
+    .cta-btn {
+      display: inline-block;
+      background-color: #fff;
+      color: #ff6b6b;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      border-radius: 0.3rem;
+      font-weight: 600;
+      transition: 0.3s ease;
+    }
+    .cta-btn:hover {
+      background-color: #e55a5a;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    /* Wave at bottom of hero */
+    .wave {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1;
+    }
+
+    /* Services */
+    .services {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      padding: 3rem 2rem;
+      background-color: #fff;
+    }
+    .service-box {
+      flex: 1 1 250px;
+      max-width: 300px;
+      background-color: #fff;
+      border: 1px solid #eee;
+      border-radius: 0.5rem;
+      padding: 2rem;
+      text-align: center;
+      transition: 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    .service-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+    .service-icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 1rem;
+      color: #ff6b6b; /* Icon color */
+    }
+    .service-box h3 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #ff6b6b;
+    }
+    .service-box p {
+      line-height: 1.6;
+      color: #555;
+    }
+
+    /* Pricing Section */
+    #pricing {
+      padding: 3rem;
+      text-align: center;
+    }
+    .pricing-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .pricing-box {
+      flex: 1 1 250px;
+      max-width: 300px;
+      border: 1px solid #eee;
+      border-radius: 0.5rem;
+      padding: 2rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    .pricing-box h3 {
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      color: #ff6b6b;
+    }
+    .pricing-box p {
+      line-height: 1.6;
+      color: #555;
+      margin-bottom: 1rem;
+    }
+
+    /* Contact */
+    .contact-section {
+      padding: 3rem 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .contact-section h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      color: #333;
+      font-weight: 600;
+    }
+    .contact-form {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    .full-width {
+      grid-column: 1 / 3;
+    }
+    .contact-form label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 0.3rem;
+      color: #333;
+    }
+    .contact-form input,
+    .contact-form select,
+    .contact-form textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 0.3rem;
+      font-size: 1rem;
+      color: #333;
+    }
+    .contact-form textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    .submit-btn {
+      background-color: #ff6b6b;
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.3rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .submit-btn:hover {
+      background-color: #e55a5a;
+    }
+    .disclaimer {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      color: #666;
+    }
+    .disclaimer a {
+      color: #ff6b6b;
+      text-decoration: underline;
+    }
+
+    /* Success Message */
+    .success-message {
+      margin-top: 1rem;
+      color: green;
+      font-weight: 600;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #f7f7f7;
+      border-top: 1px solid #eee;
+      margin-top: 2rem;
+    }
+    footer p {
+      margin: 0;
+      font-size: 0.875rem;
+      color: #555;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .menu-right {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 1rem;
       }
-      .submit-btn {
-        background-color: #ff6b6b;
-        color: #fff;
-        border: none;
-        padding: 0.75rem 1.5rem;
-        border-radius: 0.3rem;
+      .contact-form {
+        grid-template-columns: 1fr; 
+      }
+      .full-width {
+        grid-column: 1 / 2;
+      }
+    }
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+      .hero p {
         font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
       }
-      .submit-btn:hover {
-        background-color: #e55a5a;
-      }
-      .disclaimer {
-        margin-top: 1rem;
-        font-size: 0.85rem;
-        line-height: 1.4;
-        color: #666;
-      }
-      .disclaimer a {
-        color: #ff6b6b;
-        text-decoration: underline;
-      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo">Sparoodata</div>
+    <div class="menu-right">
+      <nav class="menu-items">
+        <a href="#aboutus">About Us</a>
+        <a href="#pricing">Pricing</a>
+        <!-- Blog is on a separate page -->
+        <a href="/blog">Blog</a>
+      </nav>
+      <a class="login-btn" href="YOUR_AUTH0_LOGIN_URL" target="_blank">Client Login</a>
+    </div>
+  </header>
 
-      /* Success Message */
-      .success-message {
-        margin-top: 1rem;
-        color: green;
-        font-weight: 600;
-      }
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Your All-in-One Cloud Database Solution</h1>
+      <p>
+        Easily create and manage MySQL, MongoDB, PostgreSQL, and MariaDB databases
+        with just a few clicks. Whether you need a single instance, a replicated
+        cluster, or a high-availability setup, Sparoodata has you covered.
+      </p>
+      <a href="#contact" class="cta-btn">Get Started</a>
+    </div>
+    <!-- Wave at bottom -->
+    <svg class="wave" viewBox="0 0 1440 320" preserveAspectRatio="none">
+      <path 
+        fill="#fff" 
+        fill-opacity="1" 
+        d="M0,224L48,197.3C96,171,192,117,288,106.7C384,96,480,128,576,128C672,128,768,96,864,96C960,96,1056,128,1152,149.3C1248,171,1344,181,1392,186.7L1440,192L1440,0L1392,0C1344,0,
+        1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z">
+      </path>
+    </svg>
+  </section>
 
-      /* Footer */
-      footer {
-        text-align: center;
-        padding: 1rem;
-        background-color: #f7f7f7;
-        border-top: 1px solid #eee;
-        margin-top: 2rem;
-      }
-      footer p {
-        margin: 0;
-        font-size: 0.875rem;
-        color: #555;
-      }
+  <!-- Services Section -->
+  <section class="services" id="aboutus">
+    <!-- Service 1: One-Click Provisioning (Zap icon) -->
+    <div class="service-box">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="service-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+      </svg>
+      <h3>One-Click Provisioning</h3>
+      <p>
+        Spin up databases effortlessly without complex configurations. 
+        Our intuitive platform saves time and reduces human error.
+      </p>
+    </div>
 
-      /* Responsive Adjustments */
-      @media (max-width: 992px) {
-        .menu-right {
-          flex-direction: column;
-          align-items: flex-end;
-          gap: 0.5rem;
-        }
-        .contact-form {
-          grid-template-columns: 1fr; /* single column on smaller screens */
-        }
-        .full-width {
-          grid-column: 1 / 2;
-        }
-      }
-      @media (max-width: 768px) {
-        .hero h1 {
-          font-size: 2rem;
-        }
-        .hero p {
-          font-size: 1rem;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Header -->
-    <header>
-      <div class="logo">Sparoodata</div>
-      
-      <div class="menu-right">
-        <nav class="menu-items">
-          <a href="#aboutus">About Us</a>
-          <a href="#pricing">Pricing</a>
-          
-          <!-- Blog dropdown -->
-          <div class="dropdown">
-            <button class="dropbtn">Blog</button>
-            <div class="dropdown-content">
-              <a href="#blog-mariadb">MariaDB</a>
-              <a href="#blog-mongodb">MongoDB</a>
-              <a href="#blog-postgres">PostgreSQL</a>
-            </div>
-          </div>
-        </nav>
+    <!-- Service 2: 24/7 DBA Support (Globe icon) -->
+    <div class="service-box">
+      <svg 
+        xmlns="http://www.w3.org/2000/svg"
+        class="service-icon"
+        viewBox="0 0 24 24" 
+        fill="none" 
+        stroke="currentColor" 
+        stroke-width="2" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M2 12h20"></path>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+      </svg>
+      <h3>24/7 DBA Support</h3>
+      <p>
+        Our expert team monitors and optimizes databases around the clock, 
+        ensuring top-notch performance and reliability.
+      </p>
+    </div>
 
-        <a class="login-btn" href="YOUR_AUTH0_LOGIN_URL" target="_blank">Client Login</a>
+    <!-- Service 3: Seamless Migration (Arrow icon) -->
+    <div class="service-box">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="service-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor" 
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <polyline points="17 1 21 5 17 9"></polyline>
+        <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+        <polyline points="7 23 3 19 7 15"></polyline>
+        <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+      </svg>
+      <h3>Seamless Migration</h3>
+      <p>
+        Let us handle data transfers, version upgrades, and backup strategies 
+        so you can migrate with ease.
+      </p>
+    </div>
+
+    <!-- Service 4: Day-to-Day Administration (Hand-Raise icon) -->
+    <div class="service-box">
+      <!-- "Hand-paper" icon from Font Awesome, inline SVG -->
+      <svg 
+        xmlns="http://www.w3.org/2000/svg"
+        class="service-icon"
+        viewBox="0 0 448 512"
+        fill="currentColor"
+      >
+        <path 
+          d="M216 0c13.3 0 24 10.7 24 
+          24V128h8V24c0-13.3 10.7-24 
+          24-24s24 10.7 24 24V128h8V56c0-13.3 
+          10.7-24 24-24s24 10.7 24 24V128h8c13.3 
+          0 24 10.7 24 24v88c0 2.8-.5 5.5-1.5 
+          8l-32 88-19 52.3c-7.5 20.7-27.3 35.7-49.2 
+          39.3l-119.7 20c-6.3 1-12.8 1.5-19.2 
+          1.5H72c-39.8 0-72-32.2-72-72v-90.7c0-13.3 
+          10.7-24 24-24s24 10.7 24 24V360c0 13.3 
+          10.7 24 24 24h16c2 0 4-.2 6-.5l119.7-20c4.5-.8 
+          8.2-3.9 9.7-8.2l19-52.3 32-88c.5-1.4.8-2.8.8-4.2v-88h-8c-13.3 
+          0-24-10.7-24-24V24c0-13.3 10.7-24 24-24z"
+        />
+      </svg>
+      <h3>Day-to-Day Administration</h3>
+      <p>
+        From performance tuning to security patches, our DBAs handle all 
+        aspects of database administration for you.
+      </p>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing">
+    <h2>Pricing</h2>
+    <p>Below is sample pricing for our popular managed database offerings:</p>
+    <div class="pricing-container">
+      <div class="pricing-box">
+        <h3>MariaDB</h3>
+        <p>Starting at <strong>$49/month</strong></p>
+        <p>Ideal for small to medium workloads.</p>
       </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
-      <div class="hero-content">
-        <h1>Your All-in-One Cloud Database Solution</h1>
-        <p>
-          Easily create and manage MySQL, MongoDB, PostgreSQL, and MariaDB databases
-          with just a few clicks. Whether you need a single instance, a replicated
-          cluster, or a high-availability setup, Sparoodata has you covered.
-        </p>
-        <a href="#contact" class="cta-btn">Get Started</a>
+      <div class="pricing-box">
+        <h3>MongoDB</h3>
+        <p>Starting at <strong>$59/month</strong></p>
+        <p>Perfect for modern, document-based applications.</p>
       </div>
-    </section>
+      <div class="pricing-box">
+        <h3>PostgreSQL</h3>
+        <p>Starting at <strong>$69/month</strong></p>
+        <p>Enterprise-ready relational database for advanced needs.</p>
+      </div>
+    </div>
+  </section>
 
-    <!-- Services Section -->
-    <section class="services" id="aboutus">
-      <!-- Service 1: One-Click Provisioning (Zap icon) -->
-      <div class="service-box">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="service-icon"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-        </svg>
-        <h3>One-Click Provisioning</h3>
-        <p>
-          Spin up databases effortlessly without complex configurations. 
-          Our intuitive platform saves time and reduces human error.
-        </p>
+  <!-- Contact Section -->
+  <section class="contact-section" id="contact">
+    <h2>Contact Us</h2>
+
+    <!-- If rendering with a template engine (EJS, Handlebars, etc.), 
+         you can conditionally show a success message: -->
+    
+    <% if (contactFormSubmitted) { %>
+      <div class="success-message">Your form was submitted successfully!</div>
+    <% } %>
+    
+    <form class="contact-form" action="/contact" method="POST">
+      <!-- First & Last Name -->
+      <div>
+        <label for="first-name">First Name:*</label>
+        <input id="first-name" name="firstName" type="text" placeholder="First Name *" required />
+      </div>
+      <div>
+        <label for="last-name">Last Name:*</label>
+        <input id="last-name" name="lastName" type="text" placeholder="Last Name *" required />
       </div>
 
-      <!-- Service 2: 24/7 DBA Support (Globe icon) -->
-      <div class="service-box">
-        <svg 
-          xmlns="http://www.w3.org/2000/svg"
-          class="service-icon"
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke="currentColor" 
-          stroke-width="2" 
-          stroke-linecap="round" 
-          stroke-linejoin="round"
-        >
-          <circle cx="12" cy="12" r="10"></circle>
-          <path d="M2 12h20"></path>
-          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-        </svg>
-        <h3>24/7 DBA Support</h3>
-        <p>
-          Our expert team monitors and optimizes databases around the clock, 
-          ensuring top-notch performance and reliability.
-        </p>
+      <!-- Work Email & Phone -->
+      <div>
+        <label for="work-email">Work Email:*</label>
+        <input id="work-email" name="workEmail" type="email" placeholder="Work Email *" required />
+      </div>
+      <div>
+        <label for="phone">Phone:*</label>
+        <input id="phone" name="phone" type="text" placeholder="Phone *" required />
       </div>
 
-      <!-- Service 3: Seamless Migration (Arrow icon) -->
-      <div class="service-box">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="service-icon"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor" 
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <polyline points="17 1 21 5 17 9"></polyline>
-          <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
-          <polyline points="7 23 3 19 7 15"></polyline>
-          <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
-        </svg>
-        <h3>Seamless Migration</h3>
-        <p>
-          Let us handle data transfers, version upgrades, and backup strategies 
-          so you can migrate with ease.
-        </p>
+      <!-- Job Title & Company Name -->
+      <div>
+        <label for="job-title">Job Title:*</label>
+        <input id="job-title" name="jobTitle" type="text" placeholder="Job Title *" required />
+      </div>
+      <div>
+        <label for="company-name">Company Name:*</label>
+        <input id="company-name" name="companyName" type="text" placeholder="Company *" required />
       </div>
 
-      <!-- Service 4: Day-to-Day Administration (Settings icon) -->
-      <div class="service-box">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="service-icon"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <circle cx="12" cy="12" r="3"></circle>
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 
-            1.82l.06.06a2 2 0 1 1-2.83 
-            2.83l-.06-.06a1.65 1.65 0 0 
-            0-1.82-.33 1.65 1.65 0 0 0-1 
-            1.51V21a2 2 0 0 1-2 
-            2h-1a2 2 0 0 1-2-2v-.09a1.65 
-            1.65 0 0 0-1-1.51 1.65 1.65 0 
-            0 0-1.82.33l-.06.06a2 2 0 
-            1 1-2.83-2.83l.06-.06a1.65 
-            1.65 0 0 0 .33-1.82 1.65 
-            1.65 0 0 0-1.51-1H3a2 2 0 
-            0 1-2-2v-1a2 2 0 0 1 2-2h.09a1.65
-            1.65 0 0 0 1.51-1 1.65 1.65 0 
-            0 0-.33-1.82l-.06-.06a2 2 0 
-            1 1 2.83-2.83l.06.06a1.65 1.65 
-            0 0 0 1.82.33h.06A1.65 1.65 
-            0 0 0 8 4.09V4a2 2 0 0 1 2-2h1a2 
-            2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 
-            1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 
-            2 0 1 1 2.83 2.83l-.06.06a1.65 
-            1.65 0 0 0-.33 1.82v.06a1.65 
-            1.65 0 0 0 1.51 1z"></path>
-        </svg>
-        <h3>Day-to-Day Administration</h3>
-        <p>
-          From performance tuning to security patches, our DBAs handle all 
-          aspects of database administration for you.
-        </p>
+      <!-- Website URL (full width) -->
+      <div class="full-width">
+        <label for="website-url">Website URL:*</label>
+        <input id="website-url" name="websiteUrl" type="text" placeholder="Website URL *" required />
       </div>
-    </section>
 
-    <!-- Pricing Section -->
-    <section id="pricing">
-      <h2>Pricing</h2>
-      <p>Below is sample pricing for our popular managed database offerings:</p>
-      <div class="pricing-container">
-        <div class="pricing-box">
-          <h3>MariaDB</h3>
-          <p>Starting at <strong>$49/month</strong></p>
-          <p>Ideal for small to medium workloads.</p>
-        </div>
-        <div class="pricing-box">
-          <h3>MongoDB</h3>
-          <p>Starting at <strong>$59/month</strong></p>
-          <p>Perfect for modern, document-based applications.</p>
-        </div>
-        <div class="pricing-box">
-          <h3>PostgreSQL</h3>
-          <p>Starting at <strong>$69/month</strong></p>
-          <p>Enterprise-ready relational database for advanced needs.</p>
-        </div>
+      <!-- Area of Interest (dropdown, full width) -->
+      <div class="full-width">
+        <label for="area-of-interest">Area of Interest:*</label>
+        <select id="area-of-interest" name="areaOfInterest" required>
+          <option value="">Please Select</option>
+          <option value="mysql">MySQL</option>
+          <option value="mongodb">MongoDB</option>
+          <option value="postgresql">PostgreSQL</option>
+          <option value="mariadb">MariaDB</option>
+          <option value="migration">Migration</option>
+          <option value="dba-services">Day-to-Day DBA Services</option>
+        </select>
       </div>
-    </section>
 
-    <!-- Blog Section (Placeholder) -->
-    <section id="blog">
-      <h2>Blog</h2>
-      <p>Links to your latest blog posts will go here.</p>
+      <!-- Tell us about your project (textarea) -->
+      <div class="full-width">
+        <label for="project-details">Tell us about your project:</label>
+        <textarea id="project-details" name="projectDetails" placeholder="Tell us about your project"></textarea>
+      </div>
 
-      <!-- Sub-sections for Mariadb, MongoDB, Postgres if you want to anchor to them -->
-      <h3 id="blog-mariadb">MariaDB Blogs</h3>
-      <p>Sample articles or content for MariaDB here...</p>
+      <!-- Submit button -->
+      <div class="full-width">
+        <button type="submit" class="submit-btn">Submit</button>
+      </div>
 
-      <h3 id="blog-mongodb">MongoDB Blogs</h3>
-      <p>Sample articles or content for MongoDB here...</p>
+      <!-- Disclaimer -->
+      <div class="disclaimer full-width">
+        Sparoodata needs the contact information you provide to us to contact you 
+        about our products and services. You may unsubscribe from these communications 
+        at any time. For information on how to unsubscribe, as well as our privacy 
+        practices and commitment to protecting your privacy, check out our 
+        <a href="#" target="_blank">Privacy Policy</a>.
+      </div>
+    </form>
+  </section>
 
-      <h3 id="blog-postgres">PostgreSQL Blogs</h3>
-      <p>Sample articles or content for PostgreSQL here...</p>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="contact-section" id="contact">
-      <h2>Contact Us</h2>
-
-      <!-- If `contactFormSubmitted` is true, show success message -->
-      <% if (typeof contactFormSubmitted !== 'undefined' && contactFormSubmitted) { %>
-        <div class="success-message">Your form was submitted successfully!</div>
-      <% } %>
-
-      <!-- Form: no front-end JS; submission is handled by your server -->
-      <form class="contact-form" action="/contact" method="POST">
-        <!-- First & Last Name -->
-        <div>
-          <label for="first-name">First Name:*</label>
-          <input id="first-name" name="firstName" type="text" placeholder="First Name *" required />
-        </div>
-        <div>
-          <label for="last-name">Last Name:*</label>
-          <input id="last-name" name="lastName" type="text" placeholder="Last Name *" required />
-        </div>
-
-        <!-- Work Email & Phone -->
-        <div>
-          <label for="work-email">Work Email:*</label>
-          <input id="work-email" name="workEmail" type="email" placeholder="Work Email *" required />
-        </div>
-        <div>
-          <label for="phone">Phone:*</label>
-          <input id="phone" name="phone" type="text" placeholder="Phone *" required />
-        </div>
-
-        <!-- Job Title & Company Name -->
-        <div>
-          <label for="job-title">Job Title:*</label>
-          <input id="job-title" name="jobTitle" type="text" placeholder="Job Title *" required />
-        </div>
-        <div>
-          <label for="company-name">Company Name:*</label>
-          <input id="company-name" name="companyName" type="text" placeholder="Company *" required />
-        </div>
-
-        <!-- Website URL (full width) -->
-        <div class="full-width">
-          <label for="website-url">Website URL:*</label>
-          <input id="website-url" name="websiteUrl" type="text" placeholder="Website URL *" required />
-        </div>
-
-        <!-- Area of Interest (dropdown, full width) -->
-        <div class="full-width">
-          <label for="area-of-interest">Area of Interest:*</label>
-          <select id="area-of-interest" name="areaOfInterest" required>
-            <option value="">Please Select</option>
-            <option value="mysql">MySQL</option>
-            <option value="mongodb">MongoDB</option>
-            <option value="postgresql">PostgreSQL</option>
-            <option value="mariadb">MariaDB</option>
-            <option value="migration">Migration</option>
-            <option value="dba-services">Day-to-Day DBA Services</option>
-          </select>
-        </div>
-
-        <!-- Tell us about your project (full width textarea) -->
-        <div class="full-width">
-          <label for="project-details">Tell us about your project:</label>
-          <textarea id="project-details" name="projectDetails" placeholder="Tell us about your project"></textarea>
-        </div>
-
-        <!-- Submit button (full width) -->
-        <div class="full-width">
-          <button type="submit" class="submit-btn">Submit</button>
-        </div>
-
-        <!-- Disclaimer (full width) -->
-        <div class="disclaimer full-width">
-          Sparoodata needs the contact information you provide to us to contact you 
-          about our products and services. You may unsubscribe from these communications 
-          at any time. For information on how to unsubscribe, as well as our privacy 
-          practices and commitment to protecting your privacy, check out our 
-          <a href="#" target="_blank">Privacy Policy</a>.
-        </div>
-      </form>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-      <p>© 2024 Sparoodata. All rights reserved.</p>
-    </footer>
-  </body>
+  <!-- Footer -->
+  <footer>
+    <p>© 2024 Sparoodata. All rights reserved.</p>
+  </footer>
+</body>
 </html>
