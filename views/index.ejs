@@ -45,20 +45,23 @@
         background-color: #f7f7f7;
         border-bottom: 1px solid #eee;
       }
-      .header-left {
-        display: flex;
-        align-items: center;
-        gap: 2rem;
-      }
       .logo {
         font-size: 1.5rem;
         font-weight: 600;
         color: #ff6b6b; /* Brand color */
       }
+
+      /* Menu items + login on the right */
+      .menu-right {
+        display: flex;
+        align-items: center;
+        gap: 2rem; /* spacing between menu and login button */
+      }
+
       .menu-items {
         display: flex;
         align-items: center;
-        gap: 1rem;
+        gap: 2rem; /* extra spacing between menu links */
       }
       .menu-items a {
         color: #333;
@@ -68,6 +71,56 @@
       .menu-items a:hover {
         color: #ff6b6b;
       }
+
+      /* Dropdown container */
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+      .dropbtn {
+        background: none;
+        border: none;
+        font-weight: 500;
+        color: #333;
+        cursor: pointer;
+        font-size: 1rem;
+        padding: 0;
+        /* Add arrow to the button after the text */
+        /* The small margin-left for spacing before arrow */
+      }
+      .dropbtn::after {
+        content: " ▼";
+        margin-left: 0.3rem;
+        font-size: 0.9rem; /* slightly smaller arrow if desired */
+      }
+      .dropbtn:hover {
+        color: #ff6b6b;
+      }
+      /* Dropdown content */
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #f9f9f9;
+        min-width: 140px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        z-index: 999;
+      }
+      .dropdown-content a {
+        display: block;
+        padding: 0.5rem 1rem;
+        color: #333;
+      }
+      .dropdown-content a:hover {
+        background-color: #eee;
+        color: #ff6b6b;
+      }
+      /* Show dropdown on hover */
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+
       .login-btn {
         background-color: #ff6b6b;
         color: #fff;
@@ -167,8 +220,39 @@
         color: #555;
       }
 
-      /* Misc Sections */
-      #pricing, #blog {
+      /* Pricing Section */
+      #pricing {
+        padding: 3rem;
+        text-align: center;
+      }
+      .pricing-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+      .pricing-box {
+        flex: 1 1 250px;
+        max-width: 300px;
+        border: 1px solid #eee;
+        border-radius: 0.5rem;
+        padding: 2rem;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      }
+      .pricing-box h3 {
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        color: #ff6b6b;
+      }
+      .pricing-box p {
+        line-height: 1.6;
+        color: #555;
+        margin-bottom: 1rem;
+      }
+
+      /* Blog Section */
+      #blog {
         padding: 3rem;
         text-align: center;
       }
@@ -265,6 +349,11 @@
 
       /* Responsive Adjustments */
       @media (max-width: 992px) {
+        .menu-right {
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 0.5rem;
+        }
         .contact-form {
           grid-template-columns: 1fr; /* single column on smaller screens */
         }
@@ -285,15 +374,26 @@
   <body>
     <!-- Header -->
     <header>
-      <div class="header-left">
-        <div class="logo">Sparoodata</div>
+      <div class="logo">Sparoodata</div>
+      
+      <div class="menu-right">
         <nav class="menu-items">
           <a href="#aboutus">About Us</a>
           <a href="#pricing">Pricing</a>
-          <a href="#blog">Blog</a>
+          
+          <!-- Blog dropdown -->
+          <div class="dropdown">
+            <button class="dropbtn">Blog</button>
+            <div class="dropdown-content">
+              <a href="#blog-mariadb">MariaDB</a>
+              <a href="#blog-mongodb">MongoDB</a>
+              <a href="#blog-postgres">PostgreSQL</a>
+            </div>
+          </div>
         </nav>
+
+        <a class="login-btn" href="YOUR_AUTH0_LOGIN_URL" target="_blank">Client Login</a>
       </div>
-      <a class="login-btn" href="YOUR_AUTH0_LOGIN_URL" target="_blank">Client Login</a>
     </header>
 
     <!-- Hero Section -->
@@ -423,34 +523,59 @@
       </div>
     </section>
 
-    <!-- Pricing Section (placeholder) -->
+    <!-- Pricing Section -->
     <section id="pricing">
       <h2>Pricing</h2>
-      <p>Details about your pricing plans will go here.</p>
+      <p>Below is sample pricing for our popular managed database offerings:</p>
+      <div class="pricing-container">
+        <div class="pricing-box">
+          <h3>MariaDB</h3>
+          <p>Starting at <strong>$49/month</strong></p>
+          <p>Ideal for small to medium workloads.</p>
+        </div>
+        <div class="pricing-box">
+          <h3>MongoDB</h3>
+          <p>Starting at <strong>$59/month</strong></p>
+          <p>Perfect for modern, document-based applications.</p>
+        </div>
+        <div class="pricing-box">
+          <h3>PostgreSQL</h3>
+          <p>Starting at <strong>$69/month</strong></p>
+          <p>Enterprise-ready relational database for advanced needs.</p>
+        </div>
+      </div>
     </section>
 
-    <!-- Blog Section (placeholder) -->
+    <!-- Blog Section (Placeholder) -->
     <section id="blog">
       <h2>Blog</h2>
       <p>Links to your latest blog posts will go here.</p>
+
+      <!-- Sub-sections for Mariadb, MongoDB, Postgres if you want to anchor to them -->
+      <h3 id="blog-mariadb">MariaDB Blogs</h3>
+      <p>Sample articles or content for MariaDB here...</p>
+
+      <h3 id="blog-mongodb">MongoDB Blogs</h3>
+      <p>Sample articles or content for MongoDB here...</p>
+
+      <h3 id="blog-postgres">PostgreSQL Blogs</h3>
+      <p>Sample articles or content for PostgreSQL here...</p>
     </section>
 
     <!-- Contact Section -->
     <section class="contact-section" id="contact">
       <h2>Contact Us</h2>
 
-      <!-- If `contactFormSubmitted` is true, show success message. 
-           This variable should be passed by your server when rendering. -->
+      <!-- If `contactFormSubmitted` is true, show success message -->
       <% if (typeof contactFormSubmitted !== 'undefined' && contactFormSubmitted) { %>
         <div class="success-message">Your form was submitted successfully!</div>
       <% } %>
 
-      <!-- Form with no front-end JS. Submits to your server. -->
+      <!-- Form: no front-end JS; submission is handled by your server -->
       <form class="contact-form" action="/contact" method="POST">
         <!-- First & Last Name -->
         <div>
           <label for="first-name">First Name:*</label>
-          <!-- Clear fields by default (no values) -->
           <input id="first-name" name="firstName" type="text" placeholder="First Name *" required />
         </div>
         <div>
