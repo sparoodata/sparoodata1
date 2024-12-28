@@ -1,237 +1,317 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CloudDB Services</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="description" content="Sparoodata - All-in-One Cloud Database Solution" />
+  <meta name="keywords" content="Sparoodata, Cloud Database, MySQL, MongoDB, PostgreSQL, MariaDB" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sparoodata</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" 
+    rel="stylesheet" 
+  />
+
   <style>
+    /* Reset & Global Styles */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-
     body {
-      font-family: 'Inter', sans-serif;
-      line-height: 1.6;
+      font-family: 'Poppins', sans-serif;
+      background-color: #ffffff; /* White background */
       color: #333;
-      background-color: #fff;
+      line-height: 1.5;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
     }
 
+    /* Header */
     header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 20px 10%;
-      background: #fff;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background-color: #f7f7f7;
       border-bottom: 1px solid #eee;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
     }
-
     .logo {
-      font-size: 24px;
-      font-weight: 700;
-      color: #3b82f6;
-    }
-
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 20px;
-    }
-
-    nav ul li {
-      display: inline;
-    }
-
-    nav ul li a {
-      text-decoration: none;
-      font-weight: 500;
-      color: #333;
-      transition: color 0.3s;
-    }
-
-    nav ul li a:hover {
-      color: #3b82f6;
-    }
-
-    .btn-login {
-      background: #3b82f6;
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 5px;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
+      font-size: 1.5rem;
       font-weight: 600;
-      transition: background 0.3s;
+      color: #ff6b6b; /* Brand color */
+    }
+    .login-btn {
+      background-color: #ff6b6b;
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.25rem;
+      border-radius: 0.3rem;
+      font-weight: 600;
+      transition: 0.3s ease;
+    }
+    .login-btn:hover {
+      cursor: pointer;
+      background-color: #e55a5a;
     }
 
-    .btn-login:hover {
-      background: #2563eb;
-    }
-
+    /* Hero Section (Banner) */
     .hero {
-      text-align: center;
-      padding: 80px 10%;
-      background: #f9fafb;
-    }
-
-    .hero h1 {
-      font-size: 3rem;
-      margin-bottom: 20px;
-      color: #3b82f6;
-    }
-
-    .hero p {
-      font-size: 1.2rem;
-      margin-bottom: 30px;
-    }
-
-    .btn-primary {
-      background: #3b82f6;
+      position: relative;
+      background-color: #ff6b6b; /* Brand color for hero background */
       color: #fff;
-      padding: 15px 30px;
-      border-radius: 5px;
+      text-align: center;
+      padding: 5rem 2rem 9rem; /* Extra bottom padding for the wave */
+      overflow: hidden;
+    }
+    .hero-content {
+      position: relative;  /* Stack text above wave */
+      z-index: 2;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .hero p {
+      font-size: 1.125rem;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+    .cta-btn {
+      display: inline-block;
+      background-color: #fff;
+      color: #ff6b6b;
       border: none;
-      font-size: 16px;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      border-radius: 0.3rem;
+      font-weight: 600;
+      transition: 0.3s ease;
+    }
+    .cta-btn:hover {
+      background-color: #e55a5a;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    /* Wave that transitions from hero to the next section */
+    .wave {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: auto;
+      z-index: 1;
+    }
+
+    /* Services Section */
+    .services {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      padding: 3rem 2rem;
+      background-color: #fff; /* White to match wave color */
+    }
+    .service-box {
+      flex: 1 1 250px;
+      max-width: 300px;
+      background-color: #fff;
+      border: 1px solid #eee;
+      border-radius: 0.5rem;
+      padding: 2rem;
+      text-align: center;
+      transition: 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    .service-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+    .service-box h3 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #ff6b6b; /* Brand color */
+    }
+    .service-box p {
+      line-height: 1.6;
+      color: #555;
+    }
+
+    /* Contact Section */
+    .contact-section {
+      padding: 3rem 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .contact-section h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      color: #333;
+      font-weight: 600;
+    }
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .contact-form label {
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 0.3rem;
+      font-size: 1rem;
+      color: #333;
+    }
+    .contact-form textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    .contact-form button {
+      align-self: flex-start;
+      background-color: #ff6b6b;
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.3rem;
+      font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: background-color 0.3s ease;
+    }
+    .contact-form button:hover {
+      background-color: #e55a5a;
     }
 
-    .btn-primary:hover {
-      background: #2563eb;
-    }
-
-    .section {
-      padding: 60px 10%;
-      text-align: center;
-    }
-
-    .section h2 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-      color: #3b82f6;
-    }
-
-    .section p {
-      margin-bottom: 40px;
-      font-size: 1.2rem;
-    }
-
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      text-align: left;
-    }
-
-    .feature-item {
-      padding: 20px;
-      border: 1px solid #eee;
-      border-radius: 5px;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .feature-item:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .feature-item h3 {
-      margin-bottom: 10px;
-      color: #2563eb;
-    }
-
+    /* Footer */
     footer {
-      padding: 20px 10%;
       text-align: center;
-      background: #f9fafb;
+      padding: 1rem;
+      background-color: #f7f7f7;
       border-top: 1px solid #eee;
+      margin-top: 2rem;
+    }
+    footer p {
+      margin: 0;
+      font-size: 0.875rem;
+      color: #555;
     }
 
-    footer p {
-      color: #666;
-      font-size: 14px;
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .services {
+        flex-direction: column;
+        align-items: center;
+      }
+      .hero h1 {
+        font-size: 2rem;
+      }
+      .hero p {
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
 <body>
   <!-- Header -->
   <header>
-    <div class="logo">CloudDB</div>
-    <nav>
-      <ul>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-    <button class="btn-login" onclick="location.href='/login'">Client Login</button>
+    <div class="logo">Sparoodata</div>
+    <a class="login-btn" href="YOUR_AUTH0_LOGIN_URL" target="_blank">Client Login</a>
   </header>
 
-  <!-- Hero Section -->
+  <!-- Hero Section (Banner) -->
   <section class="hero">
-    <h1>Effortless Cloud Databases</h1>
-    <p>Create and manage databases like MySQL, MongoDB, PostgreSQL, and MariaDB with just a few clicks.</p>
-    <button class="btn-primary" onclick="location.href='#services'">Get Started</button>
+    <!-- Text Content -->
+    <div class="hero-content">
+      <h1>Your All-in-One Cloud Database Solution</h1>
+      <p>
+        Easily create and manage MySQL, MongoDB, PostgreSQL, and MariaDB databases
+        with just a few clicks. Whether you need a single instance, a replicated
+        cluster, or a high-availability setup, Sparoodata has you covered. Our 
+        24/7 DBA team monitors and maintains the health of your databases, so you can 
+        focus on your core business.
+      </p>
+      <a href="#contact" class="cta-btn">Get Started</a>
+    </div>
+
+    <!-- Wave at the bottom of the hero -->
+    <svg class="wave" viewBox="0 0 1440 320">
+      <path fill="#fff" fill-opacity="1"
+        d="M0,96L48,101.3C96,107,192,117,288,117.3C384,117,480,107,576,101.3C672,96,768,96,864,112C960,128,1056,160,1152,154.7C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
+      </path>
+    </svg>
   </section>
 
   <!-- Services Section -->
-  <section id="services" class="section">
-    <h2>Our Services</h2>
-    <p>Reliable and scalable database solutions tailored to your needs.</p>
-    <div class="features">
-      <div class="feature-item">
-        <h3>Single Instance</h3>
-        <p>Simple database setup for small applications.</p>
-      </div>
-      <div class="feature-item">
-        <h3>Replicated Clusters</h3>
-        <p>High availability and scalability for enterprise workloads.</p>
-      </div>
-      <div class="feature-item">
-        <h3>Cloud Migration</h3>
-        <p>Seamless migration with zero downtime.</p>
-      </div>
-      <div class="feature-item">
-        <h3>24/7 DBA Support</h3>
-        <p>Expert database management and monitoring.</p>
-      </div>
+  <section class="services">
+    <div class="service-box">
+      <h3>One-Click Provisioning</h3>
+      <p>
+        Spin up databases effortlessly without complex configurations. 
+        Our intuitive platform saves time and reduces human error.
+      </p>
+    </div>
+    <div class="service-box">
+      <h3>24/7 DBA Support</h3>
+      <p>
+        Our expert team monitors and optimizes databases around the clock, 
+        ensuring top-notch performance and reliability.
+      </p>
+    </div>
+    <div class="service-box">
+      <h3>Seamless Migration</h3>
+      <p>
+        Let us handle data transfers, version upgrades, and backup strategies 
+        so you can migrate with ease.
+      </p>
+    </div>
+    <div class="service-box">
+      <h3>Day-to-Day Administration</h3>
+      <p>
+        From performance tuning to security patches, our DBAs handle all 
+        aspects of database administration for you.
+      </p>
     </div>
   </section>
 
-  <!-- Features Section -->
-  <section id="features" class="section">
-    <h2>Why Choose Us?</h2>
-    <p>World-class database solutions with unmatched reliability and support.</p>
-    <div class="features">
-      <div class="feature-item">
-        <h3>Secure</h3>
-        <p>Top-notch security to protect your data.</p>
-      </div>
-      <div class="feature-item">
-        <h3>Scalable</h3>
-        <p>Grow your database as your business expands.</p>
-      </div>
-      <div class="feature-item">
-        <h3>Global Coverage</h3>
-        <p>Access your database from anywhere in the world.</p>
-      </div>
-      <div class="feature-item">
-        <h3>Cost-Effective</h3>
-        <p>Affordable plans to suit all business sizes.</p>
-      </div>
-    </div>
+  <!-- Contact Section -->
+  <section class="contact-section" id="contact">
+    <h2>Contact Us</h2>
+    <form class="contact-form">
+      <label for="name">Name:</label>
+      <input id="name" type="text" placeholder="Your Name" required />
+
+      <label for="email">Email:</label>
+      <input id="email" type="email" placeholder="Your Email" required />
+
+      <label for="message">Message:</label>
+      <textarea id="message" placeholder="How can we help you?" required></textarea>
+
+      <button type="submit">Submit</button>
+    </form>
   </section>
 
   <!-- Footer -->
   <footer>
-    <p>&copy; 2024 CloudDB. All rights reserved.</p>
+    <p>© 2024 Sparoodata. All rights reserved.</p>
   </footer>
 </body>
 </html>
