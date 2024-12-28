@@ -22,9 +22,12 @@
       padding: 0;
       box-sizing: border-box;
     }
+    html {
+      scroll-behavior: smooth;
+    }
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: #ffffff; /* White background */
+      background-color: #ffffff;
       color: #333;
       line-height: 1.5;
     }
@@ -32,7 +35,7 @@
       text-decoration: none;
       color: inherit;
     }
-
+    
     /* Header */
     header {
       display: flex;
@@ -61,24 +64,23 @@
       background-color: #e55a5a;
     }
 
-    /* Hero Section (Banner) */
+    /* Hero Section with angled background */
     .hero {
       position: relative;
-      background-color: #ff6b6b; /* Brand color for hero background */
+      padding: 5rem 2rem;
       color: #fff;
+      background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+      clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
       text-align: center;
-      padding: 5rem 2rem 9rem; /* Extra bottom padding for the wave */
       overflow: hidden;
     }
     .hero-content {
-      position: relative;  /* Stack text above wave */
-      z-index: 2;
       max-width: 700px;
       margin: 0 auto;
     }
     .hero h1 {
       font-size: 2.5rem;
-      font-weight: 600;
+      font-weight: 700;
       margin-bottom: 1rem;
       line-height: 1.2;
     }
@@ -86,6 +88,7 @@
       font-size: 1.125rem;
       margin-bottom: 2rem;
       line-height: 1.6;
+      color: #fefefe; 
     }
     .cta-btn {
       display: inline-block;
@@ -104,16 +107,6 @@
       cursor: pointer;
     }
 
-    /* Wave that transitions from hero to the next section */
-    .wave {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: auto;
-      z-index: 1;
-    }
-
     /* Services Section */
     .services {
       display: flex;
@@ -121,7 +114,7 @@
       justify-content: center;
       gap: 2rem;
       padding: 3rem 2rem;
-      background-color: #fff; /* White to match wave color */
+      background-color: #fff;
     }
     .service-box {
       flex: 1 1 250px;
@@ -138,12 +131,18 @@
       transform: translateY(-5px);
       box-shadow: 0 8px 16px rgba(0,0,0,0.1);
     }
+    .service-icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 1rem;
+      color: #ff6b6b; /* Icon color */
+    }
     .service-box h3 {
       margin-top: 0;
       margin-bottom: 1rem;
       font-size: 1.25rem;
       font-weight: 600;
-      color: #ff6b6b; /* Brand color */
+      color: #ff6b6b;
     }
     .service-box p {
       line-height: 1.6;
@@ -153,7 +152,7 @@
     /* Contact Section */
     .contact-section {
       padding: 3rem 2rem;
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
     }
     .contact-section h2 {
@@ -163,16 +162,26 @@
       color: #333;
       font-weight: 600;
     }
+    
+    /* Contact form styling similar to the screenshot */
     .contact-form {
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    /* Full-width fields (e.g. Website, dropdown, textarea) can span 2 columns */
+    .full-width {
+      grid-column: 1 / 3;
     }
     .contact-form label {
+      display: block;
+      font-size: 0.9rem;
       font-weight: 500;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.3rem;
+      color: #333;
     }
     .contact-form input,
+    .contact-form select,
     .contact-form textarea {
       width: 100%;
       padding: 0.75rem;
@@ -185,8 +194,7 @@
       resize: vertical;
       min-height: 120px;
     }
-    .contact-form button {
-      align-self: flex-start;
+    .submit-btn {
       background-color: #ff6b6b;
       color: #fff;
       border: none;
@@ -197,8 +205,19 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
-    .contact-form button:hover {
+    .submit-btn:hover {
       background-color: #e55a5a;
+    }
+    /* Disclaimer */
+    .disclaimer {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      color: #666;
+    }
+    .disclaimer a {
+      color: #ff6b6b;
+      text-decoration: underline;
     }
 
     /* Footer */
@@ -216,11 +235,15 @@
     }
 
     /* Responsive Adjustments */
-    @media (max-width: 768px) {
-      .services {
-        flex-direction: column;
-        align-items: center;
+    @media (max-width: 992px) {
+      .contact-form {
+        grid-template-columns: 1fr; /* Single column on smaller screens */
       }
+      .full-width {
+        grid-column: 1 / 2;
+      }
+    }
+    @media (max-width: 768px) {
       .hero h1 {
         font-size: 2rem;
       }
@@ -237,53 +260,104 @@
     <a class="login-btn" href="YOUR_AUTH0_LOGIN_URL" target="_blank">Client Login</a>
   </header>
 
-  <!-- Hero Section (Banner) -->
+  <!-- Hero Section -->
   <section class="hero">
-    <!-- Text Content -->
     <div class="hero-content">
       <h1>Your All-in-One Cloud Database Solution</h1>
       <p>
         Easily create and manage MySQL, MongoDB, PostgreSQL, and MariaDB databases
         with just a few clicks. Whether you need a single instance, a replicated
-        cluster, or a high-availability setup, Sparoodata has you covered. Our 
-        24/7 DBA team monitors and maintains the health of your databases, so you can 
-        focus on your core business.
+        cluster, or a high-availability setup, Sparoodata has you covered.
       </p>
       <a href="#contact" class="cta-btn">Get Started</a>
     </div>
-
-    <!-- Wave at the bottom of the hero -->
-    <svg class="wave" viewBox="0 0 1440 320">
-      <path fill="#fff" fill-opacity="1"
-        d="M0,96L48,101.3C96,107,192,117,288,117.3C384,117,480,107,576,101.3C672,96,768,96,864,112C960,128,1056,160,1152,154.7C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
-      </path>
-    </svg>
   </section>
 
   <!-- Services Section -->
   <section class="services">
+    <!-- Service 1: One-Click Provisioning (Zap icon) -->
     <div class="service-box">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="service-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+      </svg>
       <h3>One-Click Provisioning</h3>
       <p>
         Spin up databases effortlessly without complex configurations. 
         Our intuitive platform saves time and reduces human error.
       </p>
     </div>
+
+    <!-- Service 2: 24/7 DBA Support (Activity or globe icon) -->
     <div class="service-box">
+      <svg 
+        xmlns="http://www.w3.org/2000/svg"
+        class="service-icon"
+        viewBox="0 0 24 24" 
+        fill="none" 
+        stroke="currentColor" 
+        stroke-width="2" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M2 12h20"></path>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+      </svg>
       <h3>24/7 DBA Support</h3>
       <p>
         Our expert team monitors and optimizes databases around the clock, 
         ensuring top-notch performance and reliability.
       </p>
     </div>
+
+    <!-- Service 3: Seamless Migration (Arrow icon) -->
     <div class="service-box">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="service-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor" 
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <polyline points="17 1 21 5 17 9"></polyline>
+        <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+        <polyline points="7 23 3 19 7 15"></polyline>
+        <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+      </svg>
       <h3>Seamless Migration</h3>
       <p>
         Let us handle data transfers, version upgrades, and backup strategies 
         so you can migrate with ease.
       </p>
     </div>
+
+    <!-- Service 4: Day-to-Day Administration (Tool icon) -->
     <div class="service-box">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="service-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M14.7 13.3a4.43 4.43 0 0 1-5.4-5.4l4.67-4.67a2 2 0 0 1 2.83 0l2.83 2.83a2 2 0 0 1 0 2.83l-4.67 4.67z"></path>
+        <path d="M2 22l2-2h3l7.5-7.5"></path>
+      </svg>
       <h3>Day-to-Day Administration</h3>
       <p>
         From performance tuning to security patches, our DBAs handle all 
@@ -296,16 +370,75 @@
   <section class="contact-section" id="contact">
     <h2>Contact Us</h2>
     <form class="contact-form">
-      <label for="name">Name:</label>
-      <input id="name" type="text" placeholder="Your Name" required />
+      <!-- First & Last Name -->
+      <div>
+        <label for="first-name">First Name:*</label>
+        <input id="first-name" type="text" placeholder="First Name *" required />
+      </div>
+      <div>
+        <label for="last-name">Last Name:*</label>
+        <input id="last-name" type="text" placeholder="Last Name *" required />
+      </div>
 
-      <label for="email">Email:</label>
-      <input id="email" type="email" placeholder="Your Email" required />
+      <!-- Work Email & Phone -->
+      <div>
+        <label for="work-email">Work Email:*</label>
+        <input id="work-email" type="email" placeholder="Work Email *" required />
+      </div>
+      <div>
+        <label for="phone">Phone:*</label>
+        <input id="phone" type="text" placeholder="Phone *" required />
+      </div>
 
-      <label for="message">Message:</label>
-      <textarea id="message" placeholder="How can we help you?" required></textarea>
+      <!-- Job Title & Company Name -->
+      <div>
+        <label for="job-title">Job Title:*</label>
+        <input id="job-title" type="text" placeholder="Job Title *" required />
+      </div>
+      <div>
+        <label for="company-name">Company Name:*</label>
+        <input id="company-name" type="text" placeholder="Company *" required />
+      </div>
 
-      <button type="submit">Submit</button>
+      <!-- Website URL (full width) -->
+      <div class="full-width">
+        <label for="website-url">Website URL:*</label>
+        <input id="website-url" type="text" placeholder="Website URL *" required />
+      </div>
+
+      <!-- Area of Interest (dropdown, full width) -->
+      <div class="full-width">
+        <label for="area-of-interest">Area of Interest:*</label>
+        <select id="area-of-interest" required>
+          <option value="">Please Select</option>
+          <option value="mysql">MySQL</option>
+          <option value="mongodb">MongoDB</option>
+          <option value="postgresql">PostgreSQL</option>
+          <option value="mariadb">MariaDB</option>
+          <option value="migration">Migration</option>
+          <option value="dba-services">Day-to-Day DBA Services</option>
+        </select>
+      </div>
+
+      <!-- Tell us about your project (full width textarea) -->
+      <div class="full-width">
+        <label for="project-details">Tell us about your project:</label>
+        <textarea id="project-details" placeholder="Tell us about your project"></textarea>
+      </div>
+
+      <!-- Submit button (full width) -->
+      <div class="full-width">
+        <button type="submit" class="submit-btn">Submit</button>
+      </div>
+
+      <!-- Disclaimer (full width) -->
+      <div class="disclaimer full-width">
+        Sparoodata needs the contact information you provide to us to contact you 
+        about our products and services. You may unsubscribe from these communications 
+        at any time. For information on how to unsubscribe, as well as our privacy 
+        practices and commitment to protecting your privacy, check out our 
+        <a href="#" target="_blank">Privacy Policy</a>.
+      </div>
     </form>
   </section>
 
