@@ -133,15 +133,10 @@ const instanceSchema = Joi.object({
 //  res.send('<h1>Welcome to SparooData</h1><p><a href="/login">Log In</a></p>');
 //});
 
-app.get("/", (req, res) => {
-  res.render("index", { user: req.user });
-  res.render('index', { contactFormSubmitted: false });
-});
-
 
 // Auth0 login
 app.get(
-  "/login",
+  "/",
   passport.authenticate("auth0", { scope: "openid email profile" })
 );
 
@@ -349,53 +344,6 @@ app.post("/create-instance", isAuthenticated, createLimiter, async (req, res) =>
   }
 });
 
-
-// ---------------------
-// Contact form
-// ---------------------
-
-
-// Define a schema & model for contact form data
-const contactSchema = new mongoose.Schema({
-  firstName: String,
-  lastName: String,
-  workEmail: String,
-  phone: String,
-  jobTitle: String,
-  companyName: String,
-  websiteUrl: String,
-  areaOfInterest: String,
-  projectDetails: String,
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
-});
-
-const Contact = mongoose.model('Contact', contactSchema);
-
-// POST route to save contact form data
-app.post('/api/contact', async (req, res) => {
-  try {
-    const newContact = new Contact({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      workEmail: req.body.workEmail,
-      phone: req.body.phone,
-      jobTitle: req.body.jobTitle,
-      companyName: req.body.companyName,
-      websiteUrl: req.body.websiteUrl,
-      areaOfInterest: req.body.areaOfInterest,
-      projectDetails: req.body.projectDetails
-    });
-    
-    await newContact.save();
-    return res.status(201).json({ message: 'Contact saved successfully.' });
-  } catch (error) {
-    console.error('Error saving contact:', error);
-    return res.status(500).json({ message: 'Error saving contact.' });
-  }
-});
 
 // Start server
 const PORT = process.env.PORT || 3000;
