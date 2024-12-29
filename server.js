@@ -135,6 +135,7 @@ const instanceSchema = Joi.object({
 
 app.get("/", (req, res) => {
   res.render("index", { user: req.user });
+  res.render('index', { contactFormSubmitted: false });
 });
 
 
@@ -352,7 +353,6 @@ app.post("/create-instance", isAuthenticated, createLimiter, async (req, res) =>
 // ---------------------
 // Contact form
 // ---------------------
-
 
 
 // Define a schema & model for contact form data
