@@ -1,6 +1,7 @@
 /************************************
  * server.js — Security-Hardened Example
- ************************************/
+Code update from GIT
+************************************/
 const express = require("express");
 const session = require("express-session");
 const passport = require("passport");
